@@ -1,0 +1,198 @@
+2014-01-08 22:11:52,223 - [INFO] - from play in pool-4-thread-4 
+Listening for HTTP on /0:0:0:0:0:0:0:0:9000
+
+2014-01-08 22:18:43,717 - [INFO] - from play in play-internal-execution-context-1 
+Application started (Dev)
+
+2014-01-09 00:01:48,198 - [ERROR] - from com.google.javascript.jscomp in pool-87-thread-4 
+C:\Users\Isaac\Desktop\samples\multicast-sensor\app\assets\javascripts\feed\controllers.js:82: ERROR - Parse error. missing } after property list
+              name: "";
+                      ^
+
+
+2014-01-09 00:01:48,301 - [ERROR] - from com.google.javascript.jscomp in pool-87-thread-4 
+C:\Users\Isaac\Desktop\samples\multicast-sensor\app\assets\javascripts\feed\controllers.js:86: ERROR - Parse error. missing ; before statement
+              data: (function() {
+                  ^
+
+
+2014-01-09 00:01:48,317 - [ERROR] - from com.google.javascript.jscomp in pool-87-thread-4 
+C:\Users\Isaac\Desktop\samples\multicast-sensor\app\assets\javascripts\feed\controllers.js:111: ERROR - Parse error. missing ; before statement
+              })()
+               ^
+
+
+2014-01-09 00:01:48,320 - [ERROR] - from com.google.javascript.jscomp in pool-87-thread-4 
+C:\Users\Isaac\Desktop\samples\multicast-sensor\app\assets\javascripts\feed\controllers.js:112: ERROR - Parse error. syntax error
+          }],
+           ^
+
+
+2014-01-09 00:01:48,322 - [ERROR] - from com.google.javascript.jscomp in pool-87-thread-4 
+C:\Users\Isaac\Desktop\samples\multicast-sensor\app\assets\javascripts\feed\controllers.js:113: ERROR - Parse error. syntax error
+          title: {
+               ^
+
+
+2014-01-09 00:01:48,324 - [ERROR] - from com.google.javascript.jscomp in pool-87-thread-4 
+C:\Users\Isaac\Desktop\samples\multicast-sensor\app\assets\javascripts\feed\controllers.js:114: ERROR - Parse error. syntax error
+              text: ''
+                  ^
+
+
+2014-01-09 00:01:48,327 - [ERROR] - from com.google.javascript.jscomp in pool-87-thread-4 
+C:\Users\Isaac\Desktop\samples\multicast-sensor\app\assets\javascripts\feed\controllers.js:115: ERROR - Parse error. syntax error
+          },
+           ^
+
+
+2014-01-09 00:01:48,329 - [ERROR] - from com.google.javascript.jscomp in pool-87-thread-4 
+C:\Users\Isaac\Desktop\samples\multicast-sensor\app\assets\javascripts\feed\controllers.js:116: ERROR - Parse error. syntax error
+          xAxis: {
+               ^
+
+
+2014-01-09 00:01:48,332 - [ERROR] - from com.google.javascript.jscomp in pool-87-thread-4 
+C:\Users\Isaac\Desktop\samples\multicast-sensor\app\assets\javascripts\feed\controllers.js:117: ERROR - Parse error. syntax error
+              currentMin: max - 60000,
+                        ^
+
+
+2014-01-09 00:01:48,334 - [ERROR] - from com.google.javascript.jscomp in pool-87-thread-4 
+C:\Users\Isaac\Desktop\samples\multicast-sensor\app\assets\javascripts\feed\controllers.js:118: ERROR - Parse error. syntax error
+              currentMax: max,
+                        ^
+
+
+2014-01-09 00:01:48,336 - [ERROR] - from com.google.javascript.jscomp in pool-87-thread-4 
+C:\Users\Isaac\Desktop\samples\multicast-sensor\app\assets\javascripts\feed\controllers.js:120: ERROR - Parse error. syntax error
+              type: 'datetime',
+                  ^
+
+
+2014-01-09 00:01:48,340 - [ERROR] - from com.google.javascript.jscomp in pool-87-thread-4 
+C:\Users\Isaac\Desktop\samples\multicast-sensor\app\assets\javascripts\feed\controllers.js:121: ERROR - Parse error. syntax error
+              tickPixelInterval: 150
+                               ^
+
+
+2014-01-09 00:01:48,342 - [ERROR] - from com.google.javascript.jscomp in pool-87-thread-4 
+C:\Users\Isaac\Desktop\samples\multicast-sensor\app\assets\javascripts\feed\controllers.js:123: ERROR - Parse error. syntax error
+          },
+           ^
+
+
+2014-01-09 00:01:48,355 - [ERROR] - from com.google.javascript.jscomp in pool-87-thread-4 
+C:\Users\Isaac\Desktop\samples\multicast-sensor\app\assets\javascripts\feed\controllers.js:125: ERROR - Parse error. syntax error
+          loading: false
+                 ^
+
+
+2014-01-09 00:01:48,358 - [ERROR] - from com.google.javascript.jscomp in pool-87-thread-4 
+C:\Users\Isaac\Desktop\samples\multicast-sensor\app\assets\javascripts\feed\controllers.js:154: ERROR - Parse error. missing ) after argument list
+  };
+   ^
+
+
+2014-01-09 00:01:48,361 - [ERROR] - from com.google.javascript.jscomp in pool-87-thread-4 
+C:\Users\Isaac\Desktop\samples\multicast-sensor\app\assets\javascripts\feed\controllers.js:157: ERROR - Parse error. invalid return
+  return {
+  ^
+
+
+2014-01-09 00:01:48,363 - [ERROR] - from com.google.javascript.jscomp in pool-87-thread-4 
+C:\Users\Isaac\Desktop\samples\multicast-sensor\app\assets\javascripts\feed\controllers.js:163: ERROR - Parse error. syntax error
+});
+^
+
+
+2014-01-09 00:01:56,029 - [ERROR] - from application in New I/O worker #4 
+
+
+! @6gp36fljj - Internal server error, for (GET) [/api/f51863bf-1ea4-4309-84e0-f2f7fed83775/sdfsdf] ->
+
+play.PlayExceptions$AssetCompilationException: Compilation error[Parse error. missing } after property list]
+	at play.core.jscompile.JavascriptCompiler$.compile(JavascriptCompiler.scala:59) ~[na:na]
+	at play.PlayAssetsCompiler$$anonfun$JavascriptCompiler$3.apply(PlayAssetsCompiler.scala:96) ~[na:na]
+	at play.PlayAssetsCompiler$$anonfun$JavascriptCompiler$3.apply(PlayAssetsCompiler.scala:96) ~[na:na]
+	at play.PlayAssetsCompiler$$anonfun$AssetsCompiler$1$$anonfun$3.liftedTree1$1(PlayAssetsCompiler.scala:52) ~[na:na]
+	at play.PlayAssetsCompiler$$anonfun$AssetsCompiler$1$$anonfun$3.apply(PlayAssetsCompiler.scala:51) ~[na:na]
+	at play.PlayAssetsCompiler$$anonfun$AssetsCompiler$1$$anonfun$3.apply(PlayAssetsCompiler.scala:48) ~[na:na]
+	at scala.collection.TraversableLike$$anonfun$flatMap$1.apply(TraversableLike.scala:251) ~[scala-library.jar:na]
+	at scala.collection.TraversableLike$$anonfun$flatMap$1.apply(TraversableLike.scala:251) ~[scala-library.jar:na]
+	at scala.collection.mutable.ResizableArray$class.foreach(ResizableArray.scala:59) ~[scala-library.jar:na]
+	at scala.collection.mutable.ArrayBuffer.foreach(ArrayBuffer.scala:47) ~[scala-library.jar:na]
+	at scala.collection.TraversableLike$class.flatMap(TraversableLike.scala:251) ~[scala-library.jar:na]
+	at scala.collection.AbstractTraversable.flatMap(Traversable.scala:105) ~[scala-library.jar:na]
+	at play.PlayAssetsCompiler$$anonfun$AssetsCompiler$1.apply(PlayAssetsCompiler.scala:48) ~[na:na]
+	at play.PlayAssetsCompiler$$anonfun$AssetsCompiler$1.apply(PlayAssetsCompiler.scala:21) ~[na:na]
+	at scala.Function7$$anonfun$tupled$1.apply(Function7.scala:35) ~[scala-library.jar:na]
+	at scala.Function7$$anonfun$tupled$1.apply(Function7.scala:34) ~[scala-library.jar:na]
+	at scala.Function1$$anonfun$compose$1.apply(Function1.scala:47) ~[scala-library.jar:na]
+	at sbt.$tilde$greater$$anonfun$$u2219$1.apply(TypeFunctions.scala:42) ~[na:na]
+	at sbt.std.Transform$$anon$4.work(System.scala:64) ~[na:na]
+	at sbt.Execute$$anonfun$submit$1$$anonfun$apply$1.apply(Execute.scala:237) ~[na:na]
+	at sbt.Execute$$anonfun$submit$1$$anonfun$apply$1.apply(Execute.scala:237) ~[na:na]
+	at sbt.ErrorHandling$.wideConvert(ErrorHandling.scala:18) ~[na:na]
+	at sbt.Execute.work(Execute.scala:244) ~[na:na]
+	at sbt.Execute$$anonfun$submit$1.apply(Execute.scala:237) ~[na:na]
+	at sbt.Execute$$anonfun$submit$1.apply(Execute.scala:237) ~[na:na]
+	at sbt.ConcurrentRestrictions$$anon$4$$anonfun$1.apply(ConcurrentRestrictions.scala:160) ~[na:na]
+	at sbt.CompletionService$$anon$2.call(CompletionService.scala:30) ~[na:na]
+	at java.util.concurrent.FutureTask$Sync.innerRun(Unknown Source) ~[na:1.7.0_21]
+	at java.util.concurrent.FutureTask.run(Unknown Source) ~[na:1.7.0_21]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Unknown Source) ~[na:1.7.0_21]
+	at java.util.concurrent.FutureTask$Sync.innerRun(Unknown Source) ~[na:1.7.0_21]
+	at java.util.concurrent.FutureTask.run(Unknown Source) ~[na:1.7.0_21]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source) [na:1.7.0_21]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source) [na:1.7.0_21]
+	at java.lang.Thread.run(Unknown Source) [na:1.7.0_21]
+
+2014-01-09 00:29:52,678 - [ERROR] - from com.google.javascript.jscomp in pool-90-thread-3 
+C:\Users\Isaac\Desktop\samples\multicast-sensor\app\assets\javascripts\feed\controllers.js:7: ERROR - Parse error. Unsupported syntax: CONST
+  const minute = 60000;
+^
+
+
+2014-01-09 00:29:52,871 - [ERROR] - from application in New I/O worker #7 
+
+
+! @6gp3a7gad - Internal server error, for (GET) [/] ->
+
+play.PlayExceptions$AssetCompilationException: Compilation error[Parse error. Unsupported syntax: CONST]
+	at play.core.jscompile.JavascriptCompiler$.compile(JavascriptCompiler.scala:59) ~[na:na]
+	at play.PlayAssetsCompiler$$anonfun$JavascriptCompiler$3.apply(PlayAssetsCompiler.scala:96) ~[na:na]
+	at play.PlayAssetsCompiler$$anonfun$JavascriptCompiler$3.apply(PlayAssetsCompiler.scala:96) ~[na:na]
+	at play.PlayAssetsCompiler$$anonfun$AssetsCompiler$1$$anonfun$3.liftedTree1$1(PlayAssetsCompiler.scala:52) ~[na:na]
+	at play.PlayAssetsCompiler$$anonfun$AssetsCompiler$1$$anonfun$3.apply(PlayAssetsCompiler.scala:51) ~[na:na]
+	at play.PlayAssetsCompiler$$anonfun$AssetsCompiler$1$$anonfun$3.apply(PlayAssetsCompiler.scala:48) ~[na:na]
+	at scala.collection.TraversableLike$$anonfun$flatMap$1.apply(TraversableLike.scala:251) ~[scala-library.jar:na]
+	at scala.collection.TraversableLike$$anonfun$flatMap$1.apply(TraversableLike.scala:251) ~[scala-library.jar:na]
+	at scala.collection.mutable.ResizableArray$class.foreach(ResizableArray.scala:59) ~[scala-library.jar:na]
+	at scala.collection.mutable.ArrayBuffer.foreach(ArrayBuffer.scala:47) ~[scala-library.jar:na]
+	at scala.collection.TraversableLike$class.flatMap(TraversableLike.scala:251) ~[scala-library.jar:na]
+	at scala.collection.AbstractTraversable.flatMap(Traversable.scala:105) ~[scala-library.jar:na]
+	at play.PlayAssetsCompiler$$anonfun$AssetsCompiler$1.apply(PlayAssetsCompiler.scala:48) ~[na:na]
+	at play.PlayAssetsCompiler$$anonfun$AssetsCompiler$1.apply(PlayAssetsCompiler.scala:21) ~[na:na]
+	at scala.Function7$$anonfun$tupled$1.apply(Function7.scala:35) ~[scala-library.jar:na]
+	at scala.Function7$$anonfun$tupled$1.apply(Function7.scala:34) ~[scala-library.jar:na]
+	at scala.Function1$$anonfun$compose$1.apply(Function1.scala:47) ~[scala-library.jar:na]
+	at sbt.$tilde$greater$$anonfun$$u2219$1.apply(TypeFunctions.scala:42) ~[na:na]
+	at sbt.std.Transform$$anon$4.work(System.scala:64) ~[na:na]
+	at sbt.Execute$$anonfun$submit$1$$anonfun$apply$1.apply(Execute.scala:237) ~[na:na]
+	at sbt.Execute$$anonfun$submit$1$$anonfun$apply$1.apply(Execute.scala:237) ~[na:na]
+	at sbt.ErrorHandling$.wideConvert(ErrorHandling.scala:18) ~[na:na]
+	at sbt.Execute.work(Execute.scala:244) ~[na:na]
+	at sbt.Execute$$anonfun$submit$1.apply(Execute.scala:237) ~[na:na]
+	at sbt.Execute$$anonfun$submit$1.apply(Execute.scala:237) ~[na:na]
+	at sbt.ConcurrentRestrictions$$anon$4$$anonfun$1.apply(ConcurrentRestrictions.scala:160) ~[na:na]
+	at sbt.CompletionService$$anon$2.call(CompletionService.scala:30) ~[na:na]
+	at java.util.concurrent.FutureTask$Sync.innerRun(Unknown Source) ~[na:1.7.0_21]
+	at java.util.concurrent.FutureTask.run(Unknown Source) ~[na:1.7.0_21]
+	at java.util.concurrent.Executors$RunnableAdapter.call(Unknown Source) ~[na:1.7.0_21]
+	at java.util.concurrent.FutureTask$Sync.innerRun(Unknown Source) ~[na:1.7.0_21]
+	at java.util.concurrent.FutureTask.run(Unknown Source) ~[na:1.7.0_21]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source) [na:1.7.0_21]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source) [na:1.7.0_21]
+	at java.lang.Thread.run(Unknown Source) [na:1.7.0_21]
+

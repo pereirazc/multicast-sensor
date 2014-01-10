@@ -1,0 +1,18 @@
+package models;
+
+
+rule "Clean Feed"
+    when
+        feed: Feed(sensor: this.sensor)
+        not (Sensor(this == sensor))
+    then
+        retract(feed)
+end
+
+rule "Clean Data"
+    when
+        data: Data(feed: this.feed)
+        not (Feed(this == feed))
+    then
+        retract(data)
+end

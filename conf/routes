@@ -1,0 +1,51 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                       controllers.Application.index
+
+# JavaScript routes object
+GET     /jsroutes.js            controllers.Application.jsRoutes()
+
+# Routes used by Angular
+# ~~~~
+
+# Authentication
+POST    /login                  controllers.Application.login()
+POST    /logout                 controllers.Application.logout()
+
+# Users
+GET     /users/:userId          controllers.Users.user(userId: Long)
+POST    /users                  controllers.Users.createUser()
+PUT     /users/:userId          controllers.Users.updateUser(userId: Long)
+DELETE  /users/:userId          controllers.Users.deleteUser(userId: Long)
+
+# Sensor
+
+GET     /sensors                controllers.SensorCtrl.getAllSensors()
+POST    /sensors                controllers.SensorCtrl.createSensor()
+GET     /sensors/:sensorId      controllers.SensorCtrl.getSensor(sensorId: String)
+POST    /sensors/:sensorId      controllers.SensorCtrl.updateSensor(sensorId: String)
+POST    /sensors/:sensorId/key  controllers.SensorCtrl.generateNewKey(sensorId: String)
+DELETE  /sensors/:sensorId      controllers.SensorCtrl.deleteSensor(sensorId: String)
+
+# Feed
+GET     /sensors/:sensorId/feeds/:feedId    controllers.FeedCtrl.getFeed(sensorId: String, feedId: String)
+POST    /sensors/:sensorId/feeds            controllers.FeedCtrl.createFeed(sensorId: String)
+POST    /sensors/:sensorId/feeds/:feedId    controllers.FeedCtrl.updateFeed(sensorId: String, feedId: String)
+DELETE  /sensors/:sensorId/feeds/:feedId    controllers.FeedCtrl.deleteFeed(sensorId: String, feedId: String)
+
+#API
+GET     /api/:sensorId/:feedId        controllers.APICtrl.getStream(sensorId: String, feedId: String)
+POST    /api/:sensorId/:feedId        controllers.APICtrl.postData(sensorId: String, feedId: String)
+
+# Static
+# ~~~~
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /lib/require.js         controllers.WebJarAssets.requirejs
+### Enable www.WebJars.org based resources to be returned
+GET     /webjars/*file          controllers.WebJarAssets.at(file)
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file           controllers.Assets.at(path="/public", file)

@@ -1,0 +1,34 @@
+package query;
+
+import models.*;
+
+declare Data
+    @role(event)
+    @timestamp(timestamp)
+    @expires(1h)
+end
+
+query "Sensors"
+    sensor: Sensor()
+end
+
+query "Sensor" (String sensorId)
+    sensor: Sensor(this.sensorId==sensorId)
+end
+
+query "Feeds" (String sensorId)
+    sensor: Sensor(this.sensorId==sensorId)
+    feed: Feed(this.sensor == sensor)
+end
+
+query "Feed" (String sensorId, String feedId)
+    sensor: Sensor(this.sensorId==sensorId)
+    feed: Feed(this.sensor == sensor, this.feedId==feedId)
+end
+
+query "FeedStream" (String sensorId, String feedId)
+    sensor: Sensor(this.sensorId==sensorId)
+    feed: Feed(this.sensor == sensor, this.feedId== feedId)
+    accumulate($e: Data(this.feed == feed) over window:length(30),
+                stream: collectList( $e ))
+end

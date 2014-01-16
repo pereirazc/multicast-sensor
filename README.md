@@ -16,7 +16,6 @@ Multicast Sensor Server 0.1.1
     - using Drools/SCENE as session manager
   - Regards sensor's timezone to get correct data timestamp
     - register sensor location at Sensor Modal (Google Maps)
-    -
   - Add 'sign up' page and account area
     - change name/password
     - cancel account

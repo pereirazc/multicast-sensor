@@ -37,7 +37,7 @@ requirejs.config({
     "async": "https://raw.github.com/millermedeiros/requirejs-plugins/master/src/async",
     "jquery": "empty:",
       "google-maps": "empty:",
-      "ui-event": "https://rawgithub.com/angular-ui/ui-utils/master/modules/event/event.js",
+      "ui-event": "https://rawgithub.com/angular-ui/ui-utils/master/modules/event/event",
       "ui-map": "http://angular-ui.github.io/ui-map/dist/ui-map.min",
     "bootstrap": "//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min",
     "angular": "//ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular.min",

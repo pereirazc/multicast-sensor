@@ -8,6 +8,13 @@ public class Sensor {
     private String label;
     private String description;
     private TimeZone timezone;
+    private User owner;
+
+    public Sensor(User owner) {
+
+        this.owner = owner;
+
+    }
 
     public String getSensorId() {
         return sensorId;
@@ -39,5 +46,13 @@ public class Sensor {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 }

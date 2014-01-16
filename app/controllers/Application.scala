@@ -6,7 +6,7 @@ import play.api.libs.json._
 import engine.SceneEngine
 
 /** Application controller, handles authentication */
-object Application extends Controller with Security {
+object Application extends Controller {
 
   /** Serves the index page, see views/index.scala.html */
   def index = Action {
@@ -21,12 +21,12 @@ object Application extends Controller with Security {
   def jsRoutes(varName: String = "jsRoutes") = Action { implicit request =>
     Ok(
       Routes.javascriptRouter(varName)(
-        routes.javascript.Application.login,
-        routes.javascript.Application.logout,
-        routes.javascript.Users.user,
-        routes.javascript.Users.createUser,
-        routes.javascript.Users.updateUser,
-        routes.javascript.Users.deleteUser,
+        //routes.javascript.Application.login,
+        //routes.javascript.Application.logout,
+
+        routes.javascript.SecurityCtrl.login,
+        routes.javascript.SecurityCtrl.logout,
+        routes.javascript.UserCtrl.getUser,
         routes.javascript.SensorCtrl.getAllSensors,
         routes.javascript.SensorCtrl.getSensor,
         routes.javascript.SensorCtrl.createSensor,

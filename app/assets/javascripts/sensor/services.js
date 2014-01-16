@@ -9,34 +9,33 @@ define(["angular", "common"], function(angular) {
 
         var self = this;
 
-        self.getAllSensors = function() {
-            return playRoutes.controllers.SensorCtrl.getAllSensors().get().then(function(response) {
-                return response.data;
-            });
+        setAuthHeader = function (authToken) {
+            $http.defaults.headers.common['X-AUTH-TOKEN'] = authToken;
+        }
+
+        self.getAllSensors = function(token) {
+            setAuthHeader(token);
+            return playRoutes.controllers.SensorCtrl.getAllSensors().get();
         };
 
-        self.createSensor = function(data) {
-            return playRoutes.controllers.SensorCtrl.createSensor().post(data).then(function(response) {
-                return response.data;
-            });
+        self.createSensor = function(token, data) {
+            setAuthHeader(token);
+            return playRoutes.controllers.SensorCtrl.createSensor().post(data);
         };
 
-        self.getSensor = function(sensorId) {
-            return playRoutes.controllers.SensorCtrl.getSensor(sensorId).get().then(function(response) {
-                return response.data;
-            });
+        self.getSensor = function(token, sensorId) {
+            setAuthHeader(token);
+            return playRoutes.controllers.SensorCtrl.getSensor(sensorId).get();
         };
 
-        self.updateSensor = function(sensorId, data) {
-            return playRoutes.controllers.SensorCtrl.updateSensor(sensorId).post(data).then(function(response) {
-                return response.data;
-            });
+        self.updateSensor = function(token, sensorId, data) {
+            setAuthHeader(token);
+            return playRoutes.controllers.SensorCtrl.updateSensor(sensorId).post(data);
         };
 
-        self.deleteSensor = function(sensorId) {
-            return playRoutes.controllers.SensorCtrl.deleteSensor(sensorId)['delete']().then(function(response) {
-                return response.data;
-            });
+        self.deleteSensor = function(token, sensorId) {
+            setAuthHeader(token);
+            return playRoutes.controllers.SensorCtrl.deleteSensor(sensorId)['delete']();
         };
 
     };

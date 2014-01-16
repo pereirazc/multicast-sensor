@@ -9,46 +9,43 @@ define(["angular", "common"], function(angular) {
 
         var self = this;
 
-        self.getAllFeeds = function(sensorId) {
-            return playRoutes.controllers.FeedCtrl.getFeed(sensorId).get().then(function(response) {
-                return response.data;
-            });
+        setAuthHeader = function (authToken) {
+            $http.defaults.headers.common['X-AUTH-TOKEN'] = authToken;
+        }
+
+        self.getAllFeeds = function(authToken, sensorId) {
+            setAuthHeader(authToken);
+            return playRoutes.controllers.FeedCtrl.getFeed(sensorId).get();
         };
 
-        self.createFeed = function(sensorId, feed) {
-         return playRoutes.controllers.FeedCtrl.createFeed(sensorId).post(feed).then(function(response) {
-            return response.data;
-         });
+        self.createFeed = function(authToken, sensorId, feed) {
+            setAuthHeader(authToken);
+            return playRoutes.controllers.FeedCtrl.createFeed(sensorId).post(feed);
         };
 
-        self.getFeed = function(sensorId, feedId) {
-            return playRoutes.controllers.FeedCtrl.getFeed(sensorId, feedId).get().then(function(response) {
-                return response.data;
-            });
+        self.getFeed = function(authToken, sensorId, feedId) {
+            setAuthHeader(authToken);
+            return playRoutes.controllers.FeedCtrl.getFeed(sensorId, feedId).get();
         };
 
-        self.updateFeed = function(sensorId, feedId, feed) {
-            return playRoutes.controllers.FeedCtrl.updateFeed(sensorId, feedId).post(feed).then(function(response) {
-                return response.data;
-            });
+        self.updateFeed = function(authToken, sensorId, feedId, feed) {
+            setAuthHeader(authToken);
+            return playRoutes.controllers.FeedCtrl.updateFeed(sensorId, feedId).post(feed);
         };
 
-        self.getStream = function(sensorId, feedId) {
-            return playRoutes.controllers.APICtrl.getStream(sensorId, feedId).get().then(function(response) {
-                return response.data;
-            });
+        self.getStream = function(authToken, sensorId, feedId) {
+            setAuthHeader(authToken);
+            return playRoutes.controllers.APICtrl.getStream(sensorId, feedId).get();
         };
 
-        self.postData = function(sensorId, feedId, data) {
-            return playRoutes.controllers.APICtrl.postData(sensorId, feedId).post(data).then(function(response) {
-                return response.data;
-            });
+        self.postData = function(authToken, sensorId, feedId, data) {
+            setAuthHeader(authToken);
+            return playRoutes.controllers.APICtrl.postData(sensorId, feedId).post(data);
         };
 
-        self.deleteFeed = function(sensorId, feedId) {
-            return playRoutes.controllers.FeedCtrl.deleteFeed(sensorId, feedId)['delete']().then(function(response) {
-                return response.data;
-            });
+        self.deleteFeed = function(authToken, sensorId, feedId) {
+            setAuthHeader(authToken);
+            return playRoutes.controllers.FeedCtrl.deleteFeed(sensorId, feedId)['delete']();
         };
 
     };

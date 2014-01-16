@@ -26,9 +26,9 @@ define(["angular"], function(angular) {
         $scope.chartConfig.xAxis.currentMax = max;
     }
 
-    feedService.getFeed($routeParams.sensorId, $routeParams.feedId).then(
-        function(response) {
-            $scope.feed = response;
+    feedService.getFeed(userService.getToken(), $routeParams.sensorId, $routeParams.feedId).success(
+        function(data, status, headers, response) {
+            $scope.feed = data;
             $scope.chartConfig.series[0].name = $scope.feed.feedId;
             $rootScope.pageTitle = $scope.feed.feedId;
             //$scope.chartConfig.title.text = $scope.feed.label;
@@ -40,7 +40,7 @@ define(["angular"], function(angular) {
         $scope.modal = {};
         $scope.modal.title = 'Edit Feed...';
         $scope.modal.ok = function(feed) {
-            feedService.updateFeed($routeParams.sensorId, feedId, feed).then(
+            feedService.updateFeed(userService.getToken(), $routeParams.sensorId, feedId, feed).success(
                 function() {
                     angular.element("#feedModal").modal("hide");
                     angular.element("#feedModal").on('hidden.bs.modal', function () {
@@ -64,7 +64,7 @@ define(["angular"], function(angular) {
 
         $scope.modal.yes = function() {
 
-            feedService.deleteFeed(sensorId, feedId).then(
+            feedService.deleteFeed(userService.getToken(), sensorId, feedId).success(
                 function() {
                     angular.element("#confirmModal").modal("hide");
                     angular.element("#confirmModal").on('hidden.bs.modal', function () {
@@ -80,7 +80,7 @@ define(["angular"], function(angular) {
     };
 
     var max;
-    var data = [];
+    var stream = [];
 
     $scope.addPoints = function () {
         var point =  {
@@ -107,29 +107,29 @@ define(["angular"], function(angular) {
 
               data: (function() {
 
-                    var data = [];
+					var stream = [];
 
-                    feedService.getStream($routeParams.sensorId, $routeParams.feedId).then(function(response) {
+                    feedService.getStream(userService.getToken(), $routeParams.sensorId, $routeParams.feedId).success(
+						function(data, status, headers, response) {
 
-                    data = response;
+							stream = data;
 
-                    var series = $scope.chartConfig.series[0];
+							var series = $scope.chartConfig.series[0];
 
-                    console.log(data);
+							if (stream.length > 0) {
+								max = stream[stream.length - 1].x;
+							} else max = (new Date()).getTime();
 
-                    if (data.length > 0) {
-                        max = data[data.length - 1].x;
-                    } else max = (new Date()).getTime();
+							series.data = stream;
 
-                    series.data = data;
+							$scope.chartConfig.xAxis.currentMin = max  - minute;
+							$scope.chartConfig.xAxis.currentMax = max;
 
-                    $scope.chartConfig.xAxis.currentMin = max  - minute;
-                    $scope.chartConfig.xAxis.currentMax = max;
+							$scope.timer = $timeout($scope.updateGraph, 5000);
+						}
+					);
 
-                    $scope.timer = $timeout($scope.updateGraph, 5000);
-                  });
-
-                  return data;
+					return stream;
               })()
           }],
           title: {
@@ -149,25 +149,27 @@ define(["angular"], function(angular) {
 
       $scope.updateGraph = function () {
 
-          if ($routeParams.feedId!=undefined) {
-              feedService.getStream($routeParams.sensorId, $routeParams.feedId).then(function(response) {
+        if ($routeParams.feedId!=undefined) {
+            feedService.getStream(userService.getToken(), $routeParams.sensorId, $routeParams.feedId).success(
+				function(data, status, headers, response) {
 
-                  data = response;
+					stream = response;
 
-                  var series = $scope.chartConfig.series[0];
+					var series = $scope.chartConfig.series[0];
 
-                  if (data.length > 0) {
-                      max = data[data.length - 1].x;
-                  } else max = (new Date()).getTime();
+					if (stream.length > 0) {
+						max = stream[stream.length - 1].x;
+					} else max = (new Date()).getTime();
 
-                  series.data = data;
+					series.data = stream;
 
-                  $scope.chartConfig.xAxis.currentMin = max  - $scope.currentTimeWindow.secs;
-                  $scope.chartConfig.xAxis.currentMax = max;
+					$scope.chartConfig.xAxis.currentMin = max  - $scope.currentTimeWindow.secs;
+					$scope.chartConfig.xAxis.currentMax = max;
 
-                  $scope.timer = $timeout($scope.updateGraph, 5000);
-              });
-          }
+					$scope.timer = $timeout($scope.updateGraph, 5000);
+				}
+			);
+        }
 
       }
       $scope.pauseStream = function () {

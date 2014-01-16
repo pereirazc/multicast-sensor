@@ -3,42 +3,37 @@ package controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.gson.Gson;
 import engine.SceneEngine;
 import models.Data;
 import models.Feed;
-import models.Sensor;
+import models.User;
 import org.drools.runtime.rule.QueryResultsRow;
-import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.With;
 import query.QueryHelper;
 
 import java.util.List;
-import java.util.UUID;
 
 public class APICtrl extends Controller {
 
     //GET
+    @With(SecurityCtrl.class)
     public static Result getStream(String sensorId, String feedId) {
-
-        List<Data> stream = QueryHelper.GetFeedStream(SceneEngine.getInstance().getSession(), sensorId, feedId);
+        User user = SecurityCtrl.getUser();
+        List<Data> stream = QueryHelper.GetFeedStream(SceneEngine.getInstance().getSession(), user.getUserId(), sensorId, feedId);
         if (stream != null) {
             ArrayNode result = JsonNodeFactory.instance.arrayNode();
 
             for(Data data: stream) {
                 result.add(data.toJson());
             }
-
             return ok(result).as("application/json");
-
         } else return badRequest("Couldn't find Feed");
     }
 
     //POST
     public static Result postData(String sensorId, String feedId) {
-
         JsonNode json = request().body().asJson();
         if(json != null) {
             QueryResultsRow r = QueryHelper.getFeed(SceneEngine.getInstance().getSession(), sensorId, feedId);

@@ -7,9 +7,9 @@ define(["angular"], function(angular) {
   var SensorCtrl = function($rootScope, $scope, userService, sensorService, feedService, $routeParams, $location) {
     $scope.user = userService.getUser();
 
-    sensorService.getSensor($routeParams.sensorId).then(
-      function(response) {
-          $scope.sensor = response;
+    sensorService.getSensor(userService.getToken(), $routeParams.sensorId).success(
+      function(data, status, headers, response) {
+          $scope.sensor = data;
           $rootScope.pageTitle = $scope.sensor.label;
       }
     );
@@ -18,7 +18,7 @@ define(["angular"], function(angular) {
         $scope.modal = {};
         $scope.modal.title = 'Edit Sensor...';
         $scope.modal.ok = function(sensor) {
-            sensorService.updateSensor(sensorId, sensor).then(
+            sensorService.updateSensor(userService.getToken(), sensorId, sensor).success(
                 function() {
                     angular.element("#sensorModal").modal("hide");
                     $scope.sensor = sensor;
@@ -39,7 +39,7 @@ define(["angular"], function(angular) {
 
         $scope.modal.yes = function() {
 
-            sensorService.deleteSensor(sensorId).then(
+            sensorService.deleteSensor(userService.getToken(), sensorId).success(
                 function() {
                     angular.element("#confirmModal").modal("hide");
                     angular.element("#confirmModal").on('hidden.bs.modal', function () {
@@ -60,11 +60,11 @@ define(["angular"], function(angular) {
         $scope.feed = {};
         $scope.modal.title = 'New Feed...';
         $scope.modal.ok = function(feed) {
-            feedService.createFeed(sensorId, feed).then(
-                function(response) {
+            feedService.createFeed(userService.getToken(), sensorId, feed).success(
+                function(data, status, headers, response) {
                     angular.element("#feedModal").modal("hide");
                     angular.element("#feedModal").on('hidden.bs.modal', function () {
-                        $location.path('dashboard/'.concat(sensorId).concat('/feeds/').concat(response.feedId));
+                        $location.path('dashboard/'.concat(sensorId).concat('/feeds/').concat(data.feedId));
                         $scope.$apply();
                     });
                 }
@@ -88,14 +88,14 @@ define(["angular"], function(angular) {
 
         $scope.modal.yes = function() {
 
-            feedService.deleteFeed(sensorId, feedId).then(
+            feedService.deleteFeed(userService.getToken(), sensorId, feedId).success(
                 function() {
                     angular.element("#confirmModal").modal("hide");
                     angular.element("#confirmModal").on('hidden.bs.modal', function () {
                         console.log('dashboard/'.concat(sensorId));
-                        sensorService.getSensor($routeParams.sensorId).then(
-                            function(response) {
-                                $scope.sensor = response;
+                        sensorService.getSensor($routeParams.sensorId).success(
+                            function(data, status, headers, response) {
+                                $scope.sensor = data;
                                 $rootScope.pageTitle = $scope.sensor.label;
                             }
                         );

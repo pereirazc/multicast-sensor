@@ -8,16 +8,27 @@ declare Data
     @expires(1h)
 end
 
-query "Sensors"
-    sensor: Sensor()
+query "UserByMailAndPassword" (String mail, String pswd)
+   user: User(email==mail, password==pswd)
 end
 
-query "Sensor" (String sensorId)
-    sensor: Sensor(this.sensorId==sensorId)
+query "UserByToken" (String token)
+   auth: Auth(this.token==token, user: this.user)
 end
 
-query "Feeds" (String sensorId)
-    sensor: Sensor(this.sensorId==sensorId)
+query "Sensors" (String userId)
+    user: User(this.userId == userId)
+    sensor: Sensor(owner == user)
+end
+
+query "Sensor" (String userId, String sensorId)
+    user: User(this.userId == userId)
+    sensor: Sensor(owner == user, this.sensorId==sensorId)
+end
+
+query "Feeds" (String userId, String sensorId)
+    user: User(this.userId == userId)
+    sensor: Sensor(owner == user, this.sensorId==sensorId)
     feed: Feed(this.sensor == sensor)
 end
 
@@ -26,7 +37,14 @@ query "Feed" (String sensorId, String feedId)
     feed: Feed(this.sensor == sensor, this.feedId==feedId)
 end
 
-query "FeedStream" (String sensorId, String feedId)
+query "FeedByUser" (String userId, String sensorId, String feedId)
+    user: User(this.userId == userId)
+    sensor: Sensor(owner == user, this.sensorId==sensorId)
+    feed: Feed(this.sensor == sensor, this.feedId==feedId)
+end
+
+query "FeedStream" (String userId, String sensorId, String feedId)
+    user: User(this.userId == userId)
     sensor: Sensor(this.sensorId==sensorId)
     feed: Feed(this.sensor == sensor, this.feedId== feedId)
     accumulate($e: Data(this.feed == feed) over window:length(30),

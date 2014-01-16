@@ -26,6 +26,10 @@
         </tr>
         </tbody>
     </table>
+    <!--In addition to creating the markers on the map, div elements with existing google.maps.Marker object should be created to hook up with events -->
+    <div ng-repeat="marker in myMarkers" ui-map-marker="myMarkers[$index]"
+         ui-event="{'map-click': 'markerClicked(marker)'}"></div>
+
     <div class="modal fade" ng-include="'/assets/templates/sensor/sensor-edit.html'" id="sensorModal" role="dialog"></div>
     <div class="modal fade" ng-include="'/assets/templates/confirm-dialog.html'" id="confirmModal" role="dialog"></div>
 </div>

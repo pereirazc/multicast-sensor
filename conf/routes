@@ -12,14 +12,11 @@ GET     /jsroutes.js            controllers.Application.jsRoutes()
 # ~~~~
 
 # Authentication
-POST    /login                  controllers.Application.login()
-POST    /logout                 controllers.Application.logout()
+POST    /login                  controllers.SecurityCtrl.login()
+POST    /logout                 controllers.SecurityCtrl.logout()
 
 # Users
-GET     /users/:userId          controllers.Users.user(userId: Long)
-POST    /users                  controllers.Users.createUser()
-PUT     /users/:userId          controllers.Users.updateUser(userId: Long)
-DELETE  /users/:userId          controllers.Users.deleteUser(userId: Long)
+GET     /user                   controllers.UserCtrl.getUser()
 
 # Sensor
 

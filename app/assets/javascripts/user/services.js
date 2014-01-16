@@ -4,48 +4,78 @@
 define(["angular", "common"], function(angular) {
   var mod = angular.module("user.services", ["ngRoute", "ngCookies", "yourprefix.common"]);
 
-  mod.factory("userService", ["$http", "$q", "playRoutes", "$cookieStore", function($http, $q, playRoutes, $cookieStore) {
+  mod.factory("userService", ["$http", "$q", "playRoutes", "$cookieStore", "$cookies", function($http, $q, playRoutes, $cookieStore, $cookies) {
     var UserService = function() {
       var self = this;
       var user;
       var token;
-      self.loginUser = function(credentials) {
 
-        console.log("a");
-        return playRoutes.controllers.Application.login().post(credentials).then(function(response) {
-          // return promise so we can chain easily
-          this.token = response.data.token;
-          // in a real app we could use the token to fetch the user data
-          return playRoutes.controllers.Users.user(3).get();
-        }).then(function(response) {
-          user = response.data; // Extract user data from user() request
-          user.email = credentials.email;
-          self.user = user;
-          $cookieStore.remove('user');
-          $cookieStore.put('user', user);
-          return user;
-        });
 
-      };
-      self.logout = function() {
-        $cookieStore.remove('user');
-        // Logout on server in a real app
-        self.user = undefined;
-      };
-      self.getUser = function() {
-        var user = $cookieStore.get('user');
-        if (user!=undefined) {
-            self.user = user;
+        self.setAuthHeader = function (authToken) {
+            console.log('format header');
+            $http.defaults.headers.common['X-AUTH-TOKEN'] = authToken;
         }
-        return user;
+
+      self.loginUser = function(credentials) {
+        //return playRoutes.controllers.UserCtrl.login().post(credentials);
+
+          return playRoutes.controllers.SecurityCtrl.login().post(credentials).then(function(response) {
+              // return promise so we can chain easily
+              self.token = response.data.authToken;
+              //$cookieStore.remove('authToken');
+              //$cookies.authToken = self.token;
+              console.log('cookie token:');
+              console.log($cookies);
+              //console.log(self.token);
+              // in a real app we could use the token to fetch the user data
+              self.setAuthHeader(self.token);
+              return playRoutes.controllers.UserCtrl.getUser().get();
+          }).then(function(response) {
+                  //user = response.data; // Extract user data from user() request
+                  //user.email = credentials.email;
+                  self.user = response.data;
+                  $cookieStore.put('user', self.user);
+                  //$cookies.user = self.user;
+                  console.log('cookie user:');
+                  console.log($cookies);
+                  return self.user;
+          });
+      };
+
+      self.cleanAuth = function() {
+          self.token  = undefined;
+          self.user   = undefined;
+          $cookieStore.remove('authToken');
+          $cookieStore.remove('user');
+      }
+
+      self.logout = function(authToken) {
+        setAuthHeader(authToken);
+        return playRoutes.controllers.SecurityCtrl.logout().post().then(
+            function() {
+                self.cleanAuth();
+            }
+        )
+
+      };
+
+      self.getToken = function() {
+        if (self.token===undefined) {
+            self.token = $cookies.authToken;
+        }
+        return self.token;
+      }
+
+      self.getUser = function() {
+          if (self.user===undefined) {
+              self.user = $cookieStore.get('user');
+          }
+          return self.user;
       };
     };
     return new UserService();
   }]);
-  /**
-   * Add this object to a route definition to only allow resolving the route if the user is
-   * logged in.
-   */
+
   mod.constant("userResolve", {
     checkAuth: ["$q", "userService", function($q, userService) {
       var deferred = $q.defer();

@@ -12,12 +12,13 @@ define(["angular"], function(angular) {
 
     $scope.sensors = [];
 
-    sensorService.getAllSensors().then(
-        function(response) {
-            $scope.sensors = response;
-        }
-    );
-
+	//$scope.sensors = sensorService.getAllSensors()
+    sensorService.getAllSensors(userService.getToken()).success(
+		function (data, status, headers, response) {
+			$scope.sensors = data;
+		}
+	);
+	
     $scope.createSensor = function () {
 
         $scope.modal = {};
@@ -25,15 +26,15 @@ define(["angular"], function(angular) {
         $scope.modal.title = 'New Sensor...';
 
         $scope.modal.ok = function(sensor) {
-            sensorService.createSensor(sensor).then(
-                function(response) {
+            sensorService.createSensor(userService.getToken(), sensor).success(
+				function (data, status, headers, response) {
                     angular.element("#sensorModal").modal("hide");
                     angular.element("#sensorModal").on('hidden.bs.modal', function () {
-                        $location.path('dashboard/'.concat(response.sensorId));
+                        $location.path('dashboard/'.concat(data.sensorId));
                         $scope.$apply();
                     });
-                }
-            );
+				}
+			);
         };
         $scope.modal.cancel = function() {
             angular.element("#sensorModal").modal("hide");
@@ -53,13 +54,13 @@ define(["angular"], function(angular) {
 
         $scope.modal.yes = function() {
 
-            sensorService.deleteSensor(sensorId).then(
+            sensorService.deleteSensor(userService.getToken(), sensorId).success(
                 function() {
                     angular.element("#confirmModal").modal("hide");
                     angular.element("#confirmModal").on('hidden.bs.modal', function () {
-                        sensorService.getAllSensors().then(
-                            function(response) {
-                                $scope.sensors = response;
+                        sensorService.getAllSensors($rootScope.authToken).success(
+                            function(data, status, headers, response) {
+                                $scope.sensors = data;
                             }
                         );
                         $scope.$apply();

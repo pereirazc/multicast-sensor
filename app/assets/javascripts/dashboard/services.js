@@ -18,7 +18,7 @@ define(["angular", "common"], function(angular) {
    */
   var handleRouteError = function($rootScope, $location) {
     $rootScope.$on("$routeChangeError", function(e, next, current) {
-      //$location.path("/");
+      //$location.path("/dashboard");
     });
   };
   handleRouteError.$inject = ["$rootScope", "$location"];

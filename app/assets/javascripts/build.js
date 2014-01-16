@@ -14,6 +14,9 @@ requirejs.config({
       exports : "angular",
       deps: ["jquery"]
     },
+    "google-maps": ["jquery"],
+    "ui-event": ["angular"],
+    "ui-map": ["angular", "google-maps", "ui-event"],
     "angular-cookies": ["angular"],
     "angular-route": ["angular"],
     "bootstrap" : ["jquery"],
@@ -31,7 +34,11 @@ requirejs.config({
   paths: {
     "_" : "//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min",
     // empty: so the optimizer ignores jquery; necessary because it doesn't support fallbacks
+    "async": "https://raw.github.com/millermedeiros/requirejs-plugins/master/src/async",
     "jquery": "empty:",
+      "google-maps": "empty:",
+      "ui-event": "https://rawgithub.com/angular-ui/ui-utils/master/modules/event/event.js",
+      "ui-map": "http://angular-ui.github.io/ui-map/dist/ui-map.min",
     "bootstrap": "//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min",
     "angular": "//ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular.min",
     "angular-cookies": "//ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular-cookies.min",

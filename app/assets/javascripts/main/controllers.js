@@ -5,12 +5,24 @@ define([], function() {
   "use strict";
 
   /** Controls the index page */
-  var HomeCtrl = function($scope, $rootScope, $location, helper) {
+  var HomeCtrl = function($scope, $rootScope, userService, $location) {
+        $rootScope.pageTitle = "Welcome";
+
+      $scope.$watch(function() {
+          var user = userService.getUser();
+          return user;
+      }, function(user) {
+          if (user===undefined) {
+              $location.path("/login");
+          } else {
+            $location.path("/dashboard");
+            $scope.user = user;
+          }
+      }, true);
+
     $location.path("/dashboard");
-    console.log(helper.sayHi());
-    $rootScope.pageTitle = "Welcome";
   };
-  HomeCtrl.$inject = ["$scope", "$rootScope", "$location", "helper"];
+  HomeCtrl.$inject = ["$scope", "$rootScope", "userService", "$location"];
 
   /** Controls the header */
   var HeaderCtrl = function($scope, $rootScope, userService, helper, $location) {
@@ -21,14 +33,17 @@ define([], function() {
       var user = userService.getUser();
       return user;
     }, function(user) {
-        $scope.user = user;
         if (user===undefined) $location.path("/login");
+        $scope.user = user;
     }, true);
 
     $scope.logout = function() {
-      userService.logout();
-      $scope.user = undefined;
-      $location.path("/login");
+      userService.logout(userService.getToken()).then(
+        function() {
+            $location.path("/login");
+        }
+      );
+
     };
   };
   HeaderCtrl.$inject = ["$scope","$rootScope", "userService", "helper", "$location", "$log"];

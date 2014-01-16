@@ -13,6 +13,9 @@
         exports : "angular",
         deps: ["jquery"]
       },
+      "google-maps": ["jquery"],
+        "ui-event": ["angular"],
+        "ui-map": ["angular"],
       "angular-cookies": ["angular"],
       "angular-route": ["angular"],
       "bootstrap" : ["jquery"],
@@ -34,6 +37,10 @@
       // Use WebJars as a fallback
       "jquery": ["//code.jquery.com/jquery-1.10.2.min", "/webjars/jquery/1.10.2/jquery.min"],
       "bootstrap": "//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min",
+      "async": "https://raw.github.com/millermedeiros/requirejs-plugins/master/src/async",
+      //"google-maps": "http://maps.google.com/maps/api/js?v=3&sensor=false",
+      "ui-event": "http://www.flocations.com/static/vendor/angular-ui/event/event",
+      "ui-map": "http://angular-ui.github.io/ui-map/dist/ui-map.min.js",
       "angular": "//ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular.min",
       "angular-cookies": "//ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular-cookies.min",
       "angular-route": "//ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular-route.min",
@@ -50,8 +57,12 @@
     console.log(err);
   };
 
+  define("google-maps", ['async!http://maps.google.com/maps/api/js?v=3&sensor=false'], function () {
+    return google.maps;
+  });
+
   // Make sure generic external scripts are loaded
-  require(["angular", "app", "angular-cookies", "angular-route", "jquery", "bootstrap", "highcharts-ng"], function(angular, app) {
+  require(["angular", "app", "angular-cookies", "angular-route", "async", "jquery", "google-maps", "ui-event", "ui-map", "bootstrap", "highcharts-ng"], function(angular, app) {
     angular.bootstrap(document, ["app"]);
   });
 })(requirejs);

@@ -153,7 +153,7 @@ define(["angular"], function(angular) {
             feedService.getStream(userService.getToken(), $routeParams.sensorId, $routeParams.feedId).success(
 				function(data, status, headers, response) {
 
-					stream = response;
+					stream = data;
 
 					var series = $scope.chartConfig.series[0];
 

@@ -38,8 +38,7 @@ define(["angular", "common"], function(angular) {
             return playRoutes.controllers.APICtrl.getStream(sensorId, feedId).get();
         };
 
-        self.postData = function(authToken, sensorId, feedId, data) {
-            setAuthHeader(authToken);
+        self.postData = function(sensorId, feedId, data) {
             return playRoutes.controllers.APICtrl.postData(sensorId, feedId).post(data);
         };
 

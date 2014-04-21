@@ -30,6 +30,15 @@ public class Global extends GlobalSettings {
         user2.setPassword("12345678");
 
         SceneEngine.getInstance().getSession().insert(user2);
+
+        User user3 = new User();
+        user3.setUserId("003");
+        user3.setEmail("jadirlucas@hotmail.com");
+        user3.setFirstName("Jadir");
+        user3.setLastName("Lucas");
+        user3.setPassword("12345678");
+
+        SceneEngine.getInstance().getSession().insert(user3);
         // load the demo data in dev mode
         //if (Play.isDev() && (User.find.all().size() == 0)) {
         //    DemoData.loadDemoData();

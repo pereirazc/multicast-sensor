@@ -1,18 +1,16 @@
 package models;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Isaac
- * Date: 04/01/14
- * Time: 02:28
- * To change this template use File | Settings | File Templates.
- */
 public class Feed {
 
     private String feedId;
     //private String label;
     private String description;
     private Sensor sensor;
+
+    public Feed(Sensor s) {
+        sensor = s;
+        sensor.addFeed(this);
+    }
 
     public String getFeedId() {
         return feedId;

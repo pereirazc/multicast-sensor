@@ -36,8 +36,7 @@ public class FeedCtrl extends Controller {
             QueryResultsRow r = QueryHelper.getSensor(SceneEngine.getInstance().getSession(), user.getUserId(), sensorId);
             if (r != null) {
                 Sensor sensor = (Sensor) r.get("sensor");
-                Feed feed = new Feed();
-                feed.setSensor(sensor);
+                Feed feed = new Feed(sensor);
                 if (json.has("feedId"))          feed.setFeedId(json.findPath("feedId").asText());
                 if (json.has("description"))    feed.setDescription(json.findPath("description").asText());
                 SceneEngine.getInstance().getSession().insert(feed);

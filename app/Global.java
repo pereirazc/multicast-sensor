@@ -10,7 +10,7 @@ public class Global extends GlobalSettings {
     @Override
     public void onStart(Application application) {
 
-        Logger.info("Adding users");
+        //Logger.info("Adding users");
 
         User user = new User();
 

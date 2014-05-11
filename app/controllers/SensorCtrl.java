@@ -3,16 +3,21 @@ package controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import engine.SceneEngine;
+import exception.NoUserException;
+import exception.NotFoundException;
 import models.Feed;
 import models.Sensor;
 import models.User;
 import org.drools.runtime.rule.QueryResults;
 import org.drools.runtime.rule.QueryResultsRow;
+import play.data.DynamicForm;
+import play.data.Form;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.With;
 import query.QueryHelper;
+import utils.SensorUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,72 +28,83 @@ import static play.libs.Json.toJson;
 @With(SecurityCtrl.class)
 public class SensorCtrl extends Controller {
     //GET
-    public static Result getAllSensors() {
-        User user = SecurityCtrl.getUser();
-        QueryResults results = QueryHelper.getAllSensors(SceneEngine.getInstance().getSession(), user.getUserId());
-        List<Sensor> sensors = new ArrayList<>();
-        for (QueryResultsRow r: results) {
-            sensors.add((Sensor) r.get("sensor"));
+    public static Result sensorDashboard() {
+        List<Sensor> sensors;
+        try {
+            sensors = SensorUtils.getAllSensors(SecurityCtrl.getUser());
+        } catch (NoUserException e) {
+            return badRequest(e.getMessage());
         }
-        return ok(toJson(sensors));
+        return ok(views.html.dashboard.index.render(sensors));
+    }
+
+    //GET
+    public static Result newSensor() {
+        return ok(views.html.sensor.sensor_modal.render(null));
+    }
+
+    //GET
+    public static Result editSensor(String sensorId) {
+
+        Sensor sensor;
+        try {
+            sensor = SensorUtils.getSensor(SecurityCtrl.getUser(), sensorId);
+        } catch (NoUserException | NotFoundException e) {
+            return badRequest(e.getMessage());
+        }
+        return ok(views.html.sensor.sensor_modal.render(sensor));
     }
 
     //GET
     public static Result getSensor(String sensorId) {
-        User user = SecurityCtrl.getUser();
-        QueryResultsRow r = QueryHelper.getSensor(SceneEngine.getInstance().getSession(), user.getUserId(), sensorId);
-        if (r != null) {
 
-            Sensor sensor = (Sensor) r.get("sensor");
-            JsonNode result = toJson(sensor);
-            QueryResults results = QueryHelper.getAllFeeds(SceneEngine.getInstance().getSession(), user.getUserId(), sensorId);
-            List<Feed> feeds = new ArrayList<>();
-            for (QueryResultsRow res: results) {
-                feeds.add((Feed) res.get("feed"));
-            }
-            ((ObjectNode) result).put("feeds", toJson(feeds));
-            return ok(result).as("application/json");
-        } else return unauthorized("unauthorized");
+        Sensor sensor;
+        try {
+            sensor = SensorUtils.getSensor(SecurityCtrl.getUser(), sensorId);
+        } catch (NoUserException | NotFoundException e) {
+            return badRequest(e.getMessage());
+        }
+        return ok(views.html.sensor.index.render(sensor));
     }
 
     //POST
     public static Result createSensor() {
-        User user = SecurityCtrl.getUser();
-        JsonNode json = request().body().asJson();
-        if(json != null) {
-            Sensor sensor = new Sensor(null);
-            sensor.setOwner(user);
-            sensor.setSensorId(UUID.randomUUID().toString());
-            if (json.has("label"))          sensor.setLabel(json.findPath("label").asText());
-            if (json.has("description"))    sensor.setDescription(json.findPath("description").asText());
-            SceneEngine.getInstance().getSession().insert(sensor);
-            return ok(toJson(sensor)).as("application/json");
-        } else return badRequest("Expecting Json data");
+
+        DynamicForm editForm = Form.form().bindFromRequest();
+        String label = editForm.get("label");
+        String description = editForm.get("description");
+        Sensor sensor;
+        try {
+            sensor = SensorUtils.createSensor(SecurityCtrl.getUser(), label, description);
+        } catch(NoUserException e) {
+            return badRequest(e.getMessage());
+        }
+
+        return redirect(routes.SensorCtrl.getSensor(sensor.getSensorId()));
     }
 
     //POST
     public static Result updateSensor(String sensorId) {
-        User user = SecurityCtrl.getUser();
-        JsonNode json = request().body().asJson();
-        if(json != null) {
-            QueryResultsRow r = QueryHelper.getSensor(SceneEngine.getInstance().getSession(), user.getUserId(), sensorId);
-            if (r != null) {
-                Sensor sensor = (Sensor) r.get("sensor");
-                if (json.has("label"))          sensor.setLabel(json.findPath("label").asText());
-                if (json.has("description"))    sensor.setDescription(json.findPath("description").asText());
-                SceneEngine.getInstance().getSession().update(r.getFactHandle("sensor"), sensor);
-                return ok(toJson(sensor)).as("application/json");
-            } else return badRequest("Couldn't find Sensor");
-        } else return badRequest("Expecting Json data");
+
+        DynamicForm editForm = Form.form().bindFromRequest();
+        String label = editForm.get("label");
+        String description = editForm.get("description");
+        Sensor sensor;
+        try {
+            sensor = SensorUtils.updateSensor(SecurityCtrl.getUser(), sensorId, label, description);
+        } catch(NoUserException | NotFoundException e) {
+            return badRequest(e.getMessage());
+        }
+        return redirect(routes.SensorCtrl.getSensor(sensor.getSensorId()));
     }
 
     public static Result deleteSensor(String sensorId) {
-        User user = SecurityCtrl.getUser();
-        QueryResultsRow r = QueryHelper.getSensor(SceneEngine.getInstance().getSession(), user.getUserId(), sensorId);
-        if (r != null) {
-            SceneEngine.getInstance().getSession().retract(r.getFactHandle("sensor"));
-            return ok();
-        } else return badRequest("Couldn't find Sensor");
+        try {
+            SensorUtils.deleteSensor(SecurityCtrl.getUser(), sensorId);
+        } catch (NoUserException | NotFoundException e) {
+            return badRequest(e.getMessage());
+        }
+        return redirect(routes.SensorCtrl.sensorDashboard());
     }
 
     //POST

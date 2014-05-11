@@ -1,5 +1,7 @@
 package models;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TimeZone;
 
 public class Sensor {
@@ -9,6 +11,8 @@ public class Sensor {
     private String description;
     private TimeZone timezone;
     private User owner;
+
+    private List<Feed> feeds = new ArrayList<Feed>();
 
     public Sensor(User owner) {
 
@@ -55,4 +59,17 @@ public class Sensor {
     public void setOwner(User owner) {
         this.owner = owner;
     }
+
+    public List<Feed> getFeeds() {
+        return this.feeds;
+    }
+
+    public void addFeed(Feed feed) {
+        feeds.add(feed);
+    }
+
+    public void removeFeed(Feed feed) {
+        feeds.remove(feed);
+    }
+
 }

@@ -1,0 +1,14 @@
+@main("Sign Up") {
+    <div class="page-header"><h1>Sign Up <small>Use any email/password</small></h1></div>
+    <form name="form" method="post" action="@routes.SecurityCtrl.login()">
+        <fieldset>
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input name="email" type="email" style="width: 30%;" class="form-control" placeholder="E-Mail" required /><br />
+                <label for="password">Password</label>
+                <input name="password" type="password" style="width: 30%;" class="form-control input-large" placeholder="Password" required /><br />
+                <button type="submit" class="btn btn-primary">Log In</button>
+            </div>
+        </fieldset>
+    </form>
+}

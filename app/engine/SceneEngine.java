@@ -53,9 +53,6 @@ public class SceneEngine extends Thread {
     	InputStream input = Play.application().resourceAsStream("/public/resources/query/QueryHelper.drl");
         kbuilder.add(ResourceFactory.newInputStreamResource(input), ResourceType.DRL);
 
-        input = Play.application().resourceAsStream("/public/resources/situation/Validation.drl");
-        kbuilder.add(ResourceFactory.newInputStreamResource(input), ResourceType.DRL);
-
         //q = Play.application().getFile("resources/situation/Situation.drl");
         //kbuilder.add(ResourceFactory.newFileResource(q), ResourceType.DRL);
 

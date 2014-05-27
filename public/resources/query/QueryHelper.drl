@@ -19,7 +19,8 @@ query "NotificationsByUser" (String userId)
     user: User(this.userId == userId)
     sensor: Sensor(owner == user)
     feed: Feed(this.sensor == sensor)
-    notification: AlertSituation(this.feed == feed)
+    curr: CurrentData(this.feed == feed)
+    notification: AlertSituation(current == curr)
 end
 
 query "AllNotifications"

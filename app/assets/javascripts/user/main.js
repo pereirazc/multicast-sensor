@@ -8,13 +8,6 @@ define(["angular", "./routes", "./controllers", "./services"], function(angular,
   mod.controller("LoginCtrl", controllers.LoginCtrl);
   mod.controller("SignUpCtrl", controllers.DashboardCtrl);
 
-  console.log(mod);
-
-
-
   return mod;
-
-
-
 
 });

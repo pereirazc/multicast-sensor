@@ -1,0 +1,76 @@
+package models;
+
+import br.ufes.inf.lprm.scene.base.*;
+
+declare Notification
+    @role(event)
+    @timestamp(timestamp)
+end
+
+declare Data
+    @role(event)
+    @timestamp(timestamp)
+end
+
+rule "Alert"
+@role(situation)
+@type(AlertSituation)
+@snapshot(on)
+@restore(first)
+    when
+    	$alert: AlertConfiguration($min: min, $max: max)
+    	$feed: Feed(alertConfig == $alert)
+    	current: CurrentData(feed==$feed, value >= $min, value <= $max)
+    then
+    	SituationHelper.situationDetected(drools);
+end
+
+rule "newCurrent"
+    when
+        $data: Data($feed: feed);
+        not CurrentData(feed == $feed)
+    then
+        CurrentData curr = new CurrentData($feed);
+        curr.updateData($data);
+        insert(curr);
+end
+
+rule "UpdateCurrent"
+no-loop true
+    when
+        $data: Data($feed: feed);
+        $current: CurrentData(feed == $feed)
+    then
+        $current.updateData($data);
+        update($current);
+end
+
+/*rule "NotificationOn"
+    when
+        $a: AlertSituation(active, $current: current')
+    then
+        insert(new Notification($current.getFeed() getSensor().getOwner(), "Alerta Ativo") );
+end
+
+rule "NotificationOff"
+    when
+        $a: AlertSituation(!active, $feed: feed)
+    then
+        insert(new Notification($feed.getSensor().getOwner(), "Alerta Desativado") );
+end*/
+
+rule "Clean Feed"
+    when
+        feed: Feed($sensor: sensor)
+        not (Sensor(this == $sensor))
+    then
+        retract(feed)
+end
+
+rule "Clean Data"
+    when
+        data: Data($feed: feed)
+        not (Feed(this == $feed))
+    then
+        retract(data)
+end

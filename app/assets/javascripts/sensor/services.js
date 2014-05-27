@@ -9,32 +9,23 @@ define(["angular", "common"], function(angular) {
 
         var self = this;
 
-        setAuthHeader = function (authToken) {
-            $http.defaults.headers.common['X-AUTH-TOKEN'] = authToken;
-        }
-
-        self.getAllSensors = function(token) {
-            setAuthHeader(token);
+        self.getAllSensors = function() {
             return playRoutes.controllers.SensorCtrl.getAllSensors().get();
         };
 
-        self.createSensor = function(token, data) {
-            setAuthHeader(token);
+        self.createSensor = function(data) {
             return playRoutes.controllers.SensorCtrl.createSensor().post(data);
         };
 
-        self.getSensor = function(token, sensorId) {
-            setAuthHeader(token);
+        self.getSensor = function(sensorId) {
             return playRoutes.controllers.SensorCtrl.getSensor(sensorId).get();
         };
 
-        self.updateSensor = function(token, sensorId, data) {
-            setAuthHeader(token);
+        self.updateSensor = function(sensorId, data) {
             return playRoutes.controllers.SensorCtrl.updateSensor(sensorId).post(data);
         };
 
-        self.deleteSensor = function(token, sensorId) {
-            setAuthHeader(token);
+        self.deleteSensor = function(sensorId) {
             return playRoutes.controllers.SensorCtrl.deleteSensor(sensorId)['delete']();
         };
 

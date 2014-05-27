@@ -2,12 +2,6 @@ package query;
 
 import models.*;
 
-declare Data
-    @role(event)
-    @timestamp(timestamp)
-    @expires(1h)
-end
-
 query "UserByMailAndPassword" (String mail, String pswd)
    user: User(email==mail, password==pswd)
 end
@@ -19,6 +13,17 @@ end
 query "Sensors" (String userId)
     user: User(this.userId == userId)
     sensor: Sensor(owner == user)
+end
+
+query "NotificationsByUser" (String userId)
+    user: User(this.userId == userId)
+    sensor: Sensor(owner == user)
+    feed: Feed(this.sensor == sensor)
+    notification: AlertSituation(this.feed == feed)
+end
+
+query "AllNotifications"
+    notification: AlertSituation()
 end
 
 query "Sensor" (String userId, String sensorId)

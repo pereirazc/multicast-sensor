@@ -9,8 +9,13 @@
     </div>
 
 </div>
+
+
+
+
 <div class="span6">
-    <!-- <button class="btn btn-primary btn-success" ng-click="addPoints()">Add Point...</button> -->
+    <input id="label" class="input-md" ng-model="pointValue" type="text"/>
+    <button class="btn btn-primary btn-success" ng-click="addPoints()">Add Point...</button>
     <select style="float: right" ng-model="currentTimeWindow"  ng-options="o.label for o in timeWindowOpts" ng-change="updateTimeWindow()" ></select>
 </div>
 <div class="span6">

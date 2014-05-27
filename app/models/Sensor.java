@@ -1,8 +1,9 @@
 package models;
 
+import java.io.Serializable;
 import java.util.TimeZone;
 
-public class Sensor {
+public class Sensor implements Serializable {
 
     private String sensorId;
     private String label;

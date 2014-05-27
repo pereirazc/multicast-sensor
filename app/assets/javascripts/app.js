@@ -8,10 +8,37 @@
 define(["angular","user", "main", "dashboard", "sensor", "feed"], function(angular) {
   // We must already declare most dependencies here (except for common), or the submodules' routes
   // will not be resolved
-  var app = angular.module("app", ["yourprefix.user", "yourprefix.main", "yourprefix.dashboard", "yourprefix.sensor", "yourprefix.feed"])
+    var app = angular.module("app", ["yourprefix.user", "yourprefix.main", "yourprefix.dashboard", "yourprefix.sensor", "yourprefix.feed"])
+
+    app.factory('authInterceptor',['$injector', '$rootScope', '$q', '$window', '$location', function ($injector, $rootScope, $q, $window, $location) {
+        return {
+            request: function (config) {
+                config.headers = config.headers || {};
+                var token = $injector.get('userService').getToken();
+                if (token != undefined) {
+                    config.headers['X-AUTH-TOKEN'] = token;
+                }
+                return config;
+            },
+
+            responseError: function(response) {
+                if (response.status === 401) {
+                    // handle the case where the user is not authenticated
+                    $injector.get('userService').cleanAuth();
+                    $location.path('/login');
+                }
+                return response || $q.when(response);
+            }
+        };
+    }]);
+
 
     app.config(['$httpProvider', function($httpProvider) {
-        $httpProvider.responseInterceptors.push(['$q', '$location', '$injector', function($q, $location, $injector) {
+
+        $httpProvider.interceptors.push('authInterceptor');
+
+
+        /*$httpProvider.responseInterceptors.push(['$q', '$location', '$injector', function($q, $location, $injector) {
 
             // More info on $q: docs.angularjs.org/api/ng.$q
             // Of course it's possible to define more dependencies.
@@ -23,7 +50,7 @@ define(["angular","user", "main", "dashboard", "sensor", "feed"], function(angul
                  in the interceptor has not finished its execution.
                  */
 
-                return promise.then(function(response) {
+                //return promise.then(function(response) {
 
                     // response.status >= 200 && response.status <= 299
                     // The http request was completed successfully.
@@ -44,9 +71,9 @@ define(["angular","user", "main", "dashboard", "sensor", "feed"], function(angul
                      code that initiated the request.
                      */
 
-                    return response;
+                    //return response;
 
-                }, function(response) {
+                //}, function(response) {
 
                     // The HTTP request was not successful.
 
@@ -55,7 +82,7 @@ define(["angular","user", "main", "dashboard", "sensor", "feed"], function(angul
                      specific errors. For example:
                      */
 
-                    if (response.status === 401) {
+                   /* if (response.status === 401) {
                         // HTTP 401 Error:
                         // The request requires user authentication
                         response.data = {
@@ -67,7 +94,7 @@ define(["angular","user", "main", "dashboard", "sensor", "feed"], function(angul
                         $injector.get('userService').cleanAuth();
                         $location.path('/login');
                         return response;
-                    }
+                    }*/
 
                     /*
                      $q.reject creates a promise that is resolved as
@@ -75,13 +102,13 @@ define(["angular","user", "main", "dashboard", "sensor", "feed"], function(angul
                      In this case the error callback will be executed.
                      */
 
-                    return $q.reject(response);
+                    //return $q.reject(response);
 
-                });
+                //});
 
-            }
+           // }
 
-        }]);
+       // }]);
 
     }]);
 

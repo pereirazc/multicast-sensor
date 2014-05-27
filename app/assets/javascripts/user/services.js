@@ -11,10 +11,10 @@ define(["angular", "common"], function(angular) {
       var token;
 
 
-        self.setAuthHeader = function (authToken) {
-            console.log('format header');
-            $http.defaults.headers.common['X-AUTH-TOKEN'] = authToken;
-        }
+        //self.setAuthHeader = function (authToken) {
+        //    console.log('format header');
+        //    $http.defaults.headers.common['X-AUTH-TOKEN'] = authToken;
+        //}
 
       self.loginUser = function(credentials) {
         //return playRoutes.controllers.UserCtrl.login().post(credentials);
@@ -28,7 +28,7 @@ define(["angular", "common"], function(angular) {
               console.log($cookies);
               //console.log(self.token);
               // in a real app we could use the token to fetch the user data
-              self.setAuthHeader(self.token);
+              //self.setAuthHeader(self.token);
               return playRoutes.controllers.UserCtrl.getUser().get();
           }).then(function(response) {
                   //user = response.data; // Extract user data from user() request
@@ -49,8 +49,7 @@ define(["angular", "common"], function(angular) {
           $cookieStore.remove('user');
       }
 
-      self.logout = function(authToken) {
-        setAuthHeader(authToken);
+      self.logout = function() {
         return playRoutes.controllers.SecurityCtrl.logout().post().then(
             function() {
                 self.cleanAuth();

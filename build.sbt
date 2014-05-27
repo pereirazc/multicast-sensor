@@ -2,7 +2,7 @@ import play.Project._
 
 name := "multicast-sensor"
 
-version := "0.1.1"
+version := "0.1.2"
 
 libraryDependencies ++= Seq(
   "org.webjars" % "underscorejs" % "1.5.1",
@@ -14,11 +14,8 @@ libraryDependencies ++= Seq(
   "org.webjars" % "angular-ui-bootstrap" % "0.9.0",
   "org.webjars" % "font-awesome" % "4.0.3",
   "com.google.code.gson" % "gson" % "2.2.4",
-  "org.drools" % "knowledge-api" % "5.5.0.Final",
-  "org.drools" % "drools-core" % "5.5.0.Final",
-  "org.drools" % "drools-compiler" % "5.5.0.Final",
-  "br.ufes.inf.lprm" % "situation-api" % "0.9.1",
-  "br.ufes.inf.lprm" % "scene-core" % "0.9.1"
+  "br.ufes.inf.lprm" % "scene-core" % "0.9.1" excludeAll(ExclusionRule(organization = "org.slf4j")),
+  "com.relayrides" % "pushy" % "0.3"
 )
 
 playScalaSettings
@@ -26,6 +23,8 @@ playScalaSettings
 resolvers += "typesafe" at "http://repo.typesafe.com/typesafe/repo"
 
 resolvers += "JBoss Public Repository Group" at "http://repository.jboss.org/nexus/content/groups/public/"
+
+//resolvers += "Local Maven Repository" at "file://"+Path.userHome.absolutePath+"/.m2/repository"
 
 resolvers += "Situation API Repo" at "https://raw.github.com/pereirazc/SCENE/mvn-repo"
 

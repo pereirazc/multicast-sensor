@@ -30,6 +30,14 @@ public class QueryHelper {
         else return null;
     }
 
+    public static QueryResults getNotifications(StatefulKnowledgeSession ksession, String userId) {
+        return ksession.getQueryResults("NotificationsByUser", new Object[] {userId});
+    }
+
+    public static QueryResults getAllNotifications(StatefulKnowledgeSession ksession) {
+        return ksession.getQueryResults("AllNotifications", new Object[] {});
+    }
+
     public static QueryResults getAllSensors(StatefulKnowledgeSession ksession, String ownerId) {
         return ksession.getQueryResults("Sensors", new Object[] {  ownerId });
     }
@@ -44,7 +52,6 @@ public class QueryHelper {
         if (i.hasNext()) return i.next();
         else return null;
     }
-
     public static QueryResultsRow getFeed(StatefulKnowledgeSession ksession, String sensorId, String feedId) {
         QueryResults results = ksession.getQueryResults("Feed", new Object[] {sensorId, feedId });
         Iterator<QueryResultsRow> i = results.iterator();

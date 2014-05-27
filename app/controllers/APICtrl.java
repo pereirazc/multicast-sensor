@@ -3,10 +3,13 @@ package controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import engine.SceneEngine;
+import models.AlertSituation;
 import models.Data;
 import models.Feed;
 import models.User;
+import org.drools.runtime.rule.QueryResults;
 import org.drools.runtime.rule.QueryResultsRow;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -14,6 +17,8 @@ import play.mvc.With;
 import query.QueryHelper;
 
 import java.util.List;
+
+import static play.libs.Json.toJson;
 
 public class APICtrl extends Controller {
 
@@ -30,6 +35,37 @@ public class APICtrl extends Controller {
             }
             return ok(result).as("application/json");
         } else return badRequest("Couldn't find Feed");
+    }
+
+    //GET
+    @With(SecurityCtrl.class)
+    public static Result getAlerts() {
+        User user = SecurityCtrl.getUser();
+        ArrayNode result = JsonNodeFactory.instance.arrayNode();
+        QueryResults results = QueryHelper.getNotifications(SceneEngine.getInstance().getSession(), user.getUserId());
+        if (results != null) {
+            for(QueryResultsRow r: results) {
+                JsonNode current = toJson(r.get("notification"));
+                result.add(current);
+            }
+        }
+        return ok(result).as("application/json");
+    }
+
+    //GET
+    public static Result getAllAlerts() {
+        User user = SecurityCtrl.getUser();
+        ArrayNode result = JsonNodeFactory.instance.arrayNode();
+
+        QueryResults results = QueryHelper.getAllNotifications(SceneEngine.getInstance().getSession());
+        if (results != null) {
+
+            for(QueryResultsRow r: results) {
+                ObjectNode current =  ((AlertSituation) r.get("notification")).toJson();
+                result.add(current);
+            }
+        }
+        return ok(result).as("application/json");
     }
 
     //POST

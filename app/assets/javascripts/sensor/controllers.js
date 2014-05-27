@@ -7,7 +7,7 @@ define(["angular"], function(angular) {
   var SensorCtrl = function($rootScope, $scope, userService, sensorService, feedService, $routeParams, $location) {
     $scope.user = userService.getUser();
 
-    sensorService.getSensor(userService.getToken(), $routeParams.sensorId).success(
+    sensorService.getSensor($routeParams.sensorId).success(
       function(data, status, headers, response) {
           $scope.sensor = data;
           $rootScope.pageTitle = $scope.sensor.label;
@@ -18,7 +18,7 @@ define(["angular"], function(angular) {
         $scope.modal = {};
         $scope.modal.title = 'Edit Sensor...';
         $scope.modal.ok = function(sensor) {
-            sensorService.updateSensor(userService.getToken(), sensorId, sensor).success(
+            sensorService.updateSensor(sensorId, sensor).success(
                 function() {
                     angular.element("#sensorModal").modal("hide");
                     $scope.sensor = sensor;
@@ -39,7 +39,7 @@ define(["angular"], function(angular) {
 
         $scope.modal.yes = function() {
 
-            sensorService.deleteSensor(userService.getToken(), sensorId).success(
+            sensorService.deleteSensor(sensorId).success(
                 function() {
                     angular.element("#confirmModal").modal("hide");
                     angular.element("#confirmModal").on('hidden.bs.modal', function () {
@@ -57,10 +57,16 @@ define(["angular"], function(angular) {
 
     $scope.createFeed = function(sensorId) {
         $scope.modal = {};
+
         $scope.feed = {};
+        $scope.feed.alertConfig = {}
+        $scope.feed.alertConfig.status = false;
+        $scope.feed.alertConfig.min = 0;
+        $scope.feed.alertConfig.max = 0;
+
         $scope.modal.title = 'New Feed...';
         $scope.modal.ok = function(feed) {
-            feedService.createFeed(userService.getToken(), sensorId, feed).success(
+            feedService.createFeed(sensorId, feed).success(
                 function(data, status, headers, response) {
                     angular.element("#feedModal").modal("hide");
                     angular.element("#feedModal").on('hidden.bs.modal', function () {
@@ -88,7 +94,7 @@ define(["angular"], function(angular) {
 
         $scope.modal.yes = function() {
 
-            feedService.deleteFeed(userService.getToken(), sensorId, feedId).success(
+            feedService.deleteFeed(sensorId, feedId).success(
                 function() {
                     angular.element("#confirmModal").modal("hide");
                     angular.element("#confirmModal").on('hidden.bs.modal', function () {

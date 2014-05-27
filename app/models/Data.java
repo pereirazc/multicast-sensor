@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-public class Data {
+import java.io.Serializable;
+
+public class Data implements Serializable {
 
     private Feed feed;
     private long timestamp;

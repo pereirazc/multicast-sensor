@@ -2,6 +2,7 @@ package engine;
 
 import br.ufes.inf.lprm.scene.SituationKnowledgeBaseFactory;
 import br.ufes.inf.lprm.scene.SituationKnowledgeBuilderFactory;
+import br.ufes.inf.lprm.scene.base.listeners.SCENESessionListener;
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseConfiguration;
 import org.drools.KnowledgeBaseFactory;
@@ -24,6 +25,7 @@ public class SceneEngine extends Thread {
 		try {
 			kbase = readKnowledgeBase();
 			this.ksession = kbase.newStatefulKnowledgeSession();
+            this.ksession.addEventListener(new SCENESessionListener());
 			this.start();
 		} catch (Exception e) {
             play.Logger.error(e.getMessage());
@@ -50,10 +52,11 @@ public class SceneEngine extends Thread {
     	KnowledgeBuilderConfiguration kBuilderConfiguration = KnowledgeBuilderFactory.newKnowledgeBuilderConfiguration(null, play.Play.application().classloader());
     	KnowledgeBuilder kbuilder = SituationKnowledgeBuilderFactory.newKnowledgeBuilder(kBuilderConfiguration);
 
-    	InputStream input = Play.application().resourceAsStream("/public/resources/query/QueryHelper.drl");
+
+        InputStream input = Play.application().resourceAsStream("/public/resources/models/Situations.drl");
         kbuilder.add(ResourceFactory.newInputStreamResource(input), ResourceType.DRL);
 
-        input = Play.application().resourceAsStream("/public/resources/situation/Validation.drl");
+    	input = Play.application().resourceAsStream("/public/resources/query/QueryHelper.drl");
         kbuilder.add(ResourceFactory.newInputStreamResource(input), ResourceType.DRL);
 
         //q = Play.application().getFile("resources/situation/Situation.drl");
@@ -68,8 +71,8 @@ public class SceneEngine extends Thread {
         }
 
     	KnowledgeBaseConfiguration kbaseConfig = KnowledgeBaseFactory.newKnowledgeBaseConfiguration(null, play.Play.application().classloader());
-   	
-        KnowledgeBase kbase = SituationKnowledgeBaseFactory.newKnowledgeBase(kbuilder, kbaseConfig);
+
+        KnowledgeBase kbase = SituationKnowledgeBaseFactory.newKnowledgeBase(kbuilder, kbaseConfig, play.Play.application().classloader());
         return kbase;
     }
 

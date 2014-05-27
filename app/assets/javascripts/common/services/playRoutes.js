@@ -39,9 +39,9 @@ define(["angular", "require", "jsRoutes"], function(angular, require, jsRoutes) 
           webSocketUrl: routeObject.webSocketURL
         };
         res[httpMethod] = function(obj) {
-          $log.log('httpMethod: ' + httpMethod);
-          $log.log('url: ' + url);
-          $log.log('obj: ' + obj);
+          //$log.log('httpMethod: ' + httpMethod);
+          //$log.log('url: ' + url);
+          //$log.log('obj: ' + obj);
           return $http[httpMethod](url, obj);
         };
         return res;

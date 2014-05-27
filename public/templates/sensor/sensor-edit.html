@@ -4,33 +4,26 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title" id="myModalLabel">{{modal.title}}</h4>
         </div>
-        <form>
-            <fieldset>
-                <div class='modal-body'>
-                    <form>
-                        <table>
-                            <tbody>
-                            <tr>
-                                <td style="font-weight: bold;vertical-align: top;text-align: right;padding-right:20px">Label</td>
-                                <td><input class="form-control input-md" ng-model="sensor.label" type="text" style="width:350px"></td>
-                            </tr>
-                            <tr>
-                                <td></br></td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight: bold;vertical-align: top;text-align: right;padding-right:20px">Description</td>
-                                <td><textarea class="form-control" ng-model="sensor.description" style="width:350px;height:100px"></textarea></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </form>
+        <div class='modal-body'>
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-md-2" for="label">Label</label>
+                    <div class="col-md-8">
+                        <input id="label" class="form-control input-md" ng-model="sensor.label" type="text"/>
+                    </div>
                 </div>
-                <div class='modal-footer'>
-                    <button class="btn btn-primary" ng-click="modal.ok(sensor)">OK</button>
-                    <button class="btn btn-warning" ng-click="modal.cancel()">Cancel</button>
+                <div class="form-group">
+                    <label class="control-label col-md-2" for="desc">Description</label>
+                    <div class="col-md-8">
+                        <textarea id="desc" class="form-control input-md" ng-model="sensor.description" class="form-control" ng-model="sensor.description"/>
+                    </div>
                 </div>
-            </fieldset>
-        </form>
+            </form>
+        </div>
+        <div class='modal-footer'>
+            <button class="btn btn-primary" ng-click="modal.ok(sensor)">OK</button>
+            <button class="btn btn-warning" ng-click="modal.cancel()">Cancel</button>
+        </div>
     </div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->
 

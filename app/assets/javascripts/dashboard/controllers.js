@@ -13,7 +13,7 @@ define(["angular"], function(angular) {
     $scope.sensors = [];
 
 	//$scope.sensors = sensorService.getAllSensors()
-    sensorService.getAllSensors(userService.getToken()).success(
+    sensorService.getAllSensors().success(
 		function (data, status, headers, response) {
 			$scope.sensors = data;
 		}
@@ -26,7 +26,7 @@ define(["angular"], function(angular) {
         $scope.modal.title = 'New Sensor...';
 
         $scope.modal.ok = function(sensor) {
-            sensorService.createSensor(userService.getToken(), sensor).success(
+            sensorService.createSensor(sensor).success(
 				function (data, status, headers, response) {
                     angular.element("#sensorModal").modal("hide");
                     angular.element("#sensorModal").on('hidden.bs.modal', function () {
@@ -54,7 +54,7 @@ define(["angular"], function(angular) {
 
         $scope.modal.yes = function() {
 
-            sensorService.deleteSensor(userService.getToken(), sensorId).success(
+            sensorService.deleteSensor(sensorId).success(
                 function() {
                     angular.element("#confirmModal").modal("hide");
                     angular.element("#confirmModal").on('hidden.bs.modal', function () {

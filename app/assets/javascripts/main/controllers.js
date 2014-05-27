@@ -38,7 +38,7 @@ define([], function() {
     }, true);
 
     $scope.logout = function() {
-      userService.logout(userService.getToken()).then(
+      userService.logout().then(
         function() {
             $location.path("/login");
         }

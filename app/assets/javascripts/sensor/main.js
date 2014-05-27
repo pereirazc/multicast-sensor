@@ -5,7 +5,8 @@
  */
 define(["angular", "./routes", "./services", "./controllers"], function(angular, routes, services, controllers) {
 
-    var mod = angular.module("yourprefix.sensor", ["ngRoute", "sensor.routes", "sensor.services"]);
+    var mod = angular.module("yourprefix.sensor", ["ngRoute", "sensor.routes", "sensor.services", "ui-rangeSlider",
+                                                    'frapontillo.bootstrap-switch']);
 
     mod.controller("SensorCtrl", controllers.SensorCtrl);
 

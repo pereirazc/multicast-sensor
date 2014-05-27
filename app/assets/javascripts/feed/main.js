@@ -4,7 +4,8 @@
  * to include a single module.
  */
 define(["angular", "./routes", "./controllers", "./services"], function(angular, routes, controllers) {
-    var mod =  angular.module("yourprefix.feed", ["ngRoute", "feed.routes", "feed.services", "highcharts-ng"]);
+    var mod =  angular.module("yourprefix.feed", [  "ngRoute", "feed.routes", "feed.services", "ui-rangeSlider", "highcharts-ng",
+                                                    'frapontillo.bootstrap-switch']);
 
     mod.controller("FeedCtrl", controllers.FeedCtrl);
 

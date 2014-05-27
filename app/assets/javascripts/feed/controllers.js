@@ -26,9 +26,18 @@ define(["angular"], function(angular) {
         $scope.chartConfig.xAxis.currentMax = max;
     }
 
-    feedService.getFeed(userService.getToken(), $routeParams.sensorId, $routeParams.feedId).success(
+    feedService.getFeed($routeParams.sensorId, $routeParams.feedId).success(
         function(data, status, headers, response) {
+            console.log(data);
             $scope.feed = data;
+
+            if ($scope.feed.alertConfig === null) {
+                $scope.feed.alertConfig = {};
+                $scope.feed.alertConfig.status = false;
+                $scope.feed.alertConfig.min =0;
+                $scope.feed.alertConfig.max =0;
+            } else $scope.feed.alertConfig.status = true;
+
             $scope.chartConfig.series[0].name = $scope.feed.feedId;
             $rootScope.pageTitle = $scope.feed.feedId;
             //$scope.chartConfig.title.text = $scope.feed.label;
@@ -38,9 +47,10 @@ define(["angular"], function(angular) {
     $scope.editFeed = function(feedId) {
 
         $scope.modal = {};
+
         $scope.modal.title = 'Edit Feed...';
         $scope.modal.ok = function(feed) {
-            feedService.updateFeed(userService.getToken(), $routeParams.sensorId, feedId, feed).success(
+            feedService.updateFeed($routeParams.sensorId, feedId, feed).success(
                 function() {
                     angular.element("#feedModal").modal("hide");
                     angular.element("#feedModal").on('hidden.bs.modal', function () {
@@ -64,7 +74,7 @@ define(["angular"], function(angular) {
 
         $scope.modal.yes = function() {
 
-            feedService.deleteFeed(userService.getToken(), sensorId, feedId).success(
+            feedService.deleteFeed(sensorId, feedId).success(
                 function() {
                     angular.element("#confirmModal").modal("hide");
                     angular.element("#confirmModal").on('hidden.bs.modal', function () {
@@ -85,7 +95,7 @@ define(["angular"], function(angular) {
     $scope.addPoints = function () {
         var point =  {
           timestamp: (new Date()).getTime(),
-          value: 30 + (Math.random()/2)
+          value: $scope.pointValue
         };
         feedService.postData($scope.feed.sensor.sensorId, $scope.feed.feedId, point);
     };
@@ -109,7 +119,7 @@ define(["angular"], function(angular) {
 
 					var stream = [];
 
-                    feedService.getStream(userService.getToken(), $routeParams.sensorId, $routeParams.feedId).success(
+                    feedService.getStream($routeParams.sensorId, $routeParams.feedId).success(
 						function(data, status, headers, response) {
 
 							stream = data;
@@ -150,7 +160,7 @@ define(["angular"], function(angular) {
       $scope.updateGraph = function () {
 
         if ($routeParams.feedId!=undefined) {
-            feedService.getStream(userService.getToken(), $routeParams.sensorId, $routeParams.feedId).success(
+            feedService.getStream($routeParams.sensorId, $routeParams.feedId).success(
 				function(data, status, headers, response) {
 
 					stream = data;

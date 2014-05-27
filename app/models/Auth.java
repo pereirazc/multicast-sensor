@@ -1,5 +1,6 @@
 package models;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
@@ -9,7 +10,7 @@ import java.util.UUID;
  * Time: 04:30
  * To change this template use File | Settings | File Templates.
  */
-public class Auth {
+public class Auth implements Serializable {
 
     private String token;
     private User user;

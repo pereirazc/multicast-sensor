@@ -47,6 +47,7 @@ requirejs.config({
     "angular": "//ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular.min",
     "angular-cookies": "//ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular-cookies.min",
     "angular-route": "//ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular-route.min",
+    "angular-touch": "//ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular-touch.min",
     //"angular-strap": "//rawgithub.com/mgcrea/angular-strap/master/dist/angular-strap.min",
     //"angular-ui-bootstrap" : "//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.9.0/ui-bootstrap-tpls.min",
     "highcharts": "//code.highcharts.com/highcharts",

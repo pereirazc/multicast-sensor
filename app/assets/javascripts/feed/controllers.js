@@ -8,12 +8,13 @@ define(["angular"], function(angular) {
 
   var FeedCtrl = function($rootScope, $scope, userService, feedService, $routeParams, $timeout, $location) {
 
+    console.log("timezoneOffset");
     Highcharts.setOptions({
         global: {
             timezoneOffset: (new Date()).getTimezoneOffset()
         }
     });
-    
+
     $scope.user = userService.getUser();
 
     $scope.timeWindowOpts = [

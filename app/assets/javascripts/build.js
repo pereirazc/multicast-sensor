@@ -38,7 +38,7 @@ requirejs.config({
   paths: {
     "_" : "//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min",
     // empty: so the optimizer ignores jquery; necessary because it doesn't support fallbacks
-    "async": "https://raw.github.com/millermedeiros/requirejs-plugins/master/src/async",
+    "async": "https://rawgithub.com/millermedeiros/requirejs-plugins/master/src/async",
     "jquery": "empty:",
     //  "google-maps": "empty:",
     //  "ui-event": "https://rawgithub.com/angular-ui/ui-utils/master/modules/event/event",
@@ -51,10 +51,10 @@ requirejs.config({
     //"angular-strap": "//rawgithub.com/mgcrea/angular-strap/master/dist/angular-strap.min",
     //"angular-ui-bootstrap" : "//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.9.0/ui-bootstrap-tpls.min",
     "highcharts": "//code.highcharts.com/highcharts",
-    "highcharts-ng": "//raw.github.com/pablojim/highcharts-ng/master/dist/highcharts-ng.min",
-    "range-slider": "//raw.githubusercontent.com/danielcrisp/angular-rangeslider/v0.0.7/angular.rangeSlider",
-    "bootstrap-switch": "////raw.githubusercontent.com/nostalgiaz/bootstrap-switch/v3.0.0/dist/js/bootstrap-switch.min",
-    "ng-switch": "//raw.githubusercontent.com/frapontillo/angular-bootstrap-switch/0.3.0-alpha.2/dist/angular-bootstrap-switch.min",
+    "highcharts-ng": "//rawgithub.com/pablojim/highcharts-ng/master/dist/highcharts-ng.min",
+    "range-slider": "//rawgithub.com/danielcrisp/angular-rangeslider/v0.0.7/angular.rangeSlider",
+    "bootstrap-switch": "////rawgithub.com/nostalgiaz/bootstrap-switch/v3.0.0/dist/js/bootstrap-switch.min",
+    "ng-switch": "//rawgithub.com/frapontillo/angular-bootstrap-switch/0.3.0-alpha.2/dist/angular-bootstrap-switch.min",
     // empty: so the optimizer doesn't try to find jsRoutes.js in our project
     "jsRoutes" : "empty:"
   }

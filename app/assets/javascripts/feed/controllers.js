@@ -8,6 +8,12 @@ define(["angular"], function(angular) {
 
   var FeedCtrl = function($rootScope, $scope, userService, feedService, $routeParams, $timeout, $location) {
 
+    Highcharts.setOptions({
+        global: {
+            timezoneOffset: (new Date()).getTimezoneOffset()
+        }
+    });
+    
     $scope.user = userService.getUser();
 
     $scope.timeWindowOpts = [
@@ -102,6 +108,13 @@ define(["angular"], function(angular) {
 
       $scope.chartConfig = {
           options: {
+
+              global: {
+                  useUTC: false
+              },
+
+
+
               chart: {
                   type: 'line',
                   zoomType: 'x'

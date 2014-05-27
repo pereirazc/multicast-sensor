@@ -1,8 +1,11 @@
-Multicast Sensor Server 0.1.1
+Multicast Sensor Server 0.1.2
 =========
 **Cloud-sensor management service.**
 
 **Changelog:**
+
+* **0.1.2**
+ * Added feed alert feature (SCENE situation detection)
 
 * **0.1.1**
  * Added basic authentication management (login and Rest API Security)

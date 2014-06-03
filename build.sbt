@@ -2,7 +2,7 @@ import play.Project._
 
 name := "multicast-sensor"
 
-version := "0.1.2"
+version := "0.1.3"
 
 libraryDependencies ++= Seq(
   "org.webjars" % "underscorejs" % "1.5.1",

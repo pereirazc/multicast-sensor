@@ -1,5 +1,8 @@
 package models;
 
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import java.io.Serializable;
 
 /**
@@ -7,21 +10,50 @@ import java.io.Serializable;
  */
 public class Notification implements Serializable {
 
-    private User user;
+    private static long last_id = 0;
+
+    private long id;
     private long timestamp;
-    private String message;
+    private long duration;
+    private String type;
+    private Data data;
+    private AlertConfiguration configuration;
 
-    public Notification(User user, String message) {
-        this.user = user;
-        this.message = message;
+    public Notification(long timestamp, String type, CurrentData current) {
+        last_id++;
+        this.id = last_id;
+        this.timestamp = timestamp;
+        this.type = type;
+        this.data = new Data();
+        this.data.setFeed(current.getFeed());
+        this.data.setTimestamp(current.getTimestamp());
+        this.data.setValue(current.getValue());
+
+        this.configuration = new AlertConfiguration();
+        this.configuration.setMin(current.getFeed().getAlertConfig().getMin());
+        this.configuration.setMax(current.getFeed().getAlertConfig().getMax());
     }
 
-    public User getUser() {
-        return user;
+    public Notification(long timestamp, String type, CurrentData current, long duration) {
+        last_id++;
+        this.id = last_id;
+        this.timestamp = timestamp;
+        this.type = type;
+
+        this.duration = duration;
+
+        this.data = new Data();
+        this.data.setFeed(current.getFeed());
+        this.data.setTimestamp(current.getTimestamp());
+        this.data.setValue(current.getValue());
+
+        this.configuration = new AlertConfiguration();
+        this.configuration.setMin(current.getFeed().getAlertConfig().getMin());
+        this.configuration.setMax(current.getFeed().getAlertConfig().getMax());
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public long getId() {
+        return this.id;
     }
 
     public long getTimestamp() {
@@ -32,12 +64,35 @@ public class Notification implements Serializable {
         this.timestamp = timestamp;
     }
 
-    public String getMessage() {
-        return message;
+    public String getType() {
+        return type;
     }
 
-    public void setMessage(String messsage) {
-        this.message = messsage;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Data getData() {
+        return this.data;
+    }
+
+    public void setData(Data data) {
+        this.data = data;
+    }
+
+    public ObjectNode toJson() {
+        ObjectNode node = JsonNodeFactory.instance.objectNode();
+        node.put("notificationId", id);
+        node.put("timestamp", timestamp);
+        node.put("type", type);
+        if (type.equals("FINISH")) {
+            node.put("duration", duration);
+        } else node.put("duration", "");
+        node.put("sensoId", data.getFeed().getSensor().getSensorId());
+        node.put("feedId", data.getFeed().getFeedId());
+        node.put("configuration", play.libs.Json.toJson(configuration));
+        node.put("data", data.toJson());
+        return node;
     }
 
 }

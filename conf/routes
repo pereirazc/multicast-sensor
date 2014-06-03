@@ -36,8 +36,8 @@ DELETE  /sensors/:sensorId/feeds/:feedId    controllers.FeedCtrl.deleteFeed(sens
 #API
 GET     /api/:sensorId/:feedId        controllers.APICtrl.getStream(sensorId: String, feedId: String)
 POST    /api/:sensorId/:feedId        controllers.APICtrl.postData(sensorId: String, feedId: String)
-GET     /api/alerts                   controllers.APICtrl.getAlerts()
-GET     /api/alertz                   controllers.APICtrl.getAllAlerts()
+GET     /api/alerts                   controllers.APICtrl.getAlerts(min: Long)
+GET     /api/alertz                   controllers.APICtrl.getAllAlerts(min: Long)
 
 # Static
 # ~~~~

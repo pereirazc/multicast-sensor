@@ -4,7 +4,6 @@ import br.ufes.inf.lprm.situation.Role;
 import br.ufes.inf.lprm.situation.SituationType;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import  play.libs.Json;
 
 /**
  * Created by pereirazc on 23/05/14.

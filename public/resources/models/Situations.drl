@@ -15,8 +15,8 @@ end
 rule "Alert"
 @role(situation)
 @type(AlertSituation)
-@snapshot(on)
-@restore(first)
+//@snapshot(on)
+//@restore(first)
     when
     	$alert: AlertConfiguration($min: min, $max: max)
     	$feed: Feed(alertConfig == $alert)
@@ -45,19 +45,26 @@ no-loop true
         update($current);
 end
 
-/*rule "NotificationOn"
+rule "NotificationOn"
     when
-        $a: AlertSituation(active, $current: current')
+        $a: AlertSituation(active, $current: current)
     then
-        insert(new Notification($current.getFeed() getSensor().getOwner(), "Alerta Ativo") );
+        insert(new Notification(drools.getKnowledgeRuntime().getSessionClock().getCurrentTime(),
+                                "START",
+                                $current)
+        );
 end
 
 rule "NotificationOff"
     when
-        $a: AlertSituation(!active, $feed: feed)
+        $a: AlertSituation(!active, $current: current)
     then
-        insert(new Notification($feed.getSensor().getOwner(), "Alerta Desativado") );
-end*/
+        insert(new Notification(drools.getKnowledgeRuntime().getSessionClock().getCurrentTime(),
+                                "FINISH",
+                                $current,
+                                $a.getDuration())
+        );
+end
 
 rule "Clean Feed"
     when

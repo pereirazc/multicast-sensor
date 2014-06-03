@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import engine.SceneEngine;
-import models.AlertSituation;
-import models.Data;
-import models.Feed;
-import models.User;
+import models.*;
 import org.drools.runtime.rule.QueryResults;
 import org.drools.runtime.rule.QueryResultsRow;
 import play.mvc.Controller;
@@ -39,13 +36,13 @@ public class APICtrl extends Controller {
 
     //GET
     @With(SecurityCtrl.class)
-    public static Result getAlerts() {
+    public static Result getAlerts(Long min) {
         User user = SecurityCtrl.getUser();
         ArrayNode result = JsonNodeFactory.instance.arrayNode();
-        QueryResults results = QueryHelper.getNotifications(SceneEngine.getInstance().getSession(), user.getUserId());
+        QueryResults results = QueryHelper.getNotifications(SceneEngine.getInstance().getSession(), user.getUserId(), min);
         if (results != null) {
             for(QueryResultsRow r: results) {
-                JsonNode current = toJson(r.get("notification"));
+                JsonNode current = ((Notification) r.get("notification")).toJson();
                 result.add(current);
             }
         }
@@ -53,15 +50,15 @@ public class APICtrl extends Controller {
     }
 
     //GET
-    public static Result getAllAlerts() {
+    public static Result getAllAlerts(Long min) {
         User user = SecurityCtrl.getUser();
         ArrayNode result = JsonNodeFactory.instance.arrayNode();
 
-        QueryResults results = QueryHelper.getAllNotifications(SceneEngine.getInstance().getSession());
+        QueryResults results = QueryHelper.getAllNotifications(SceneEngine.getInstance().getSession(), min);
         if (results != null) {
 
             for(QueryResultsRow r: results) {
-                ObjectNode current =  ((AlertSituation) r.get("notification")).toJson();
+                ObjectNode current =  ((Notification) r.get("notification")).toJson();
                 result.add(current);
             }
         }

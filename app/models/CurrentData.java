@@ -1,5 +1,8 @@
 package models;
 
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import java.io.Serializable;
 
 /**
@@ -29,6 +32,5 @@ public class CurrentData implements Serializable {
     public Feed getFeed() {
         return feed;
     }
-
 
 }

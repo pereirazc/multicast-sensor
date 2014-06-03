@@ -15,16 +15,16 @@ query "Sensors" (String userId)
     sensor: Sensor(owner == user)
 end
 
-query "NotificationsByUser" (String userId)
-    user: User(this.userId == userId)
-    sensor: Sensor(owner == user)
-    feed: Feed(this.sensor == sensor)
-    curr: CurrentData(this.feed == feed)
-    notification: AlertSituation(current == curr)
+query "NotificationsByUser" (String userId, long threshold)
+    $user: User(this.userId == userId)
+    $sensor: Sensor(owner == $user)
+    $feed: Feed(this.sensor == $sensor)
+    $data: Data(this.feed == $feed)
+    notification: Notification(id > threshold, data == $data)
 end
 
-query "AllNotifications"
-    notification: AlertSituation()
+query "AllNotifications" (long threshold)
+    notification: Notification(id > threshold)
 end
 
 query "Sensor" (String userId, String sensorId)

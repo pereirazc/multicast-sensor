@@ -19,8 +19,7 @@ query "NotificationsByUser" (String userId, long threshold)
     $user: User(this.userId == userId)
     $sensor: Sensor(owner == $user)
     $feed: Feed(this.sensor == $sensor)
-    $data: Data(this.feed == $feed)
-    notification: Notification(id > threshold, data == $data)
+    notification: Notification(id > threshold, data.feed == $feed)
 end
 
 query "AllNotifications" (long threshold)

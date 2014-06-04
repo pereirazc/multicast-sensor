@@ -21,6 +21,10 @@ public class AlertSituation extends SituationType {
     @Role(label="current")
     private CurrentData current;
 
+    public long getAlertId()  {
+        return alertId;
+    }
+
     public CurrentData getCurrent() {
         return current;
     }

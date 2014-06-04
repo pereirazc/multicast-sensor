@@ -50,6 +50,7 @@ rule "NotificationOn"
         $a: AlertSituation(active, $current: current)
     then
         insert(new Notification(drools.getKnowledgeRuntime().getSessionClock().getCurrentTime(),
+                                $a.getAlertId(),
                                 "START",
                                 $current)
         );
@@ -60,6 +61,7 @@ rule "NotificationOff"
         $a: AlertSituation(!active, $current: current)
     then
         insert(new Notification(drools.getKnowledgeRuntime().getSessionClock().getCurrentTime(),
+                                $a.getAlertId(),
                                 "FINISH",
                                 $current,
                                 $a.getDuration())

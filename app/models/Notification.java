@@ -14,12 +14,13 @@ public class Notification implements Serializable {
 
     private long id;
     private long timestamp;
+    private long alertId;
     private long duration;
     private String type;
     private Data data;
     private AlertConfiguration configuration;
 
-    public Notification(long timestamp, String type, CurrentData current) {
+    public Notification(long timestamp, long alertId, String type, CurrentData current) {
         last_id++;
         this.id = last_id;
         this.timestamp = timestamp;
@@ -34,10 +35,11 @@ public class Notification implements Serializable {
         this.configuration.setMax(current.getFeed().getAlertConfig().getMax());
     }
 
-    public Notification(long timestamp, String type, CurrentData current, long duration) {
+    public Notification(long timestamp, long alertId, String type, CurrentData current, long duration) {
         last_id++;
         this.id = last_id;
         this.timestamp = timestamp;
+        this.alertId = alertId;
         this.type = type;
 
         this.duration = duration;
@@ -58,6 +60,9 @@ public class Notification implements Serializable {
 
     public long getTimestamp() {
         return timestamp;
+    }
+    public long getAlertId() {
+        return alertId;
     }
 
     public void setTimestamp(long timestamp) {
@@ -83,12 +88,14 @@ public class Notification implements Serializable {
     public ObjectNode toJson() {
         ObjectNode node = JsonNodeFactory.instance.objectNode();
         node.put("notificationId", id);
+        node.put("alertId", alertId);
         node.put("timestamp", timestamp);
         node.put("type", type);
         if (type.equals("FINISH")) {
             node.put("duration", duration);
         } else node.put("duration", "");
-        node.put("sensoId", data.getFeed().getSensor().getSensorId());
+        node.put("sensorId", data.getFeed().getSensor().getSensorId());
+        node.put("sensorLabel", data.getFeed().getSensor().getLabel());
         node.put("feedId", data.getFeed().getFeedId());
         node.put("configuration", play.libs.Json.toJson(configuration));
         node.put("data", data.toJson());

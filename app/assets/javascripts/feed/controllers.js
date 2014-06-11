@@ -1,19 +1,94 @@
 /**
  * Feed controllers.
  */
-define(["angular"], function(angular) {
+define(['angular'], function(angular) {
+
   "use strict";
 
   var minute = 60000;
 
-  var FeedCtrl = function($rootScope, $scope, userService, feedService, $routeParams, $timeout, $location) {
+  var FeedCtrl = function($rootScope, $scope, userService, feedService, $routeParams, $timeout, $location, feed, stream) {
+
+      $scope.chartConfig = {
+          options: {
+              chart: {
+                  type: 'line',
+                  zoomType: 'x'
+              }
+          },
+          credits: {
+              enabled: false
+          },
+          series: [{
+              name: "",
+              color: '#7ECE25',
+              data: $scope.stream
+          }],
+          title: {
+              text: ''
+          },
+          xAxis: {
+              currentMin: max - 60000,
+              currentMax: max,
+              //minRange: 1,
+              type: 'datetime',
+              tickPixelInterval: 150
+
+          },
+          loading: false
+      };
+
+  $scope.updateGraph = function () {
+
+      if ($routeParams.feedId!==undefined) {
+          feedService.getStream($routeParams.sensorId, $routeParams.feedId).success(
+              function(data/*, status, headers, response*/) {
+
+                  stream = data;
+
+                  var series = $scope.chartConfig.series[0];
+
+                  if (stream.length > 0) {
+                      max = stream[stream.length - 1].x;
+                  } else {
+                      max = (new Date()).getTime();
+                  }
+
+                  series.data = stream;
+
+                  $scope.chartConfig.xAxis.currentMin = max  - $scope.currentTimeWindow.secs;
+                  $scope.chartConfig.xAxis.currentMax = max;
+
+                  $scope.timer = $timeout($scope.updateGraph, 5000);
+              }
+          );
+      }
+
+  };
+
+    function init(feed, stream) {
+      console.log(feed);
+      $scope.feed = feed;
+      $rootScope.pageTitle = $scope.feed.feedId;
+
+      if ($scope.feed.alertConfig === null) {
+          $scope.feed.alertConfig = {};
+          $scope.feed.alertConfig.status = false;
+          $scope.feed.alertConfig.min =0;
+          $scope.feed.alertConfig.max =0;
+      } else {
+          $scope.feed.alertConfig.status = true;
+      }
+
+      $scope.chartConfig.series[0].name = $scope.feed.feedId;
+      $scope.stream = stream;
+      $scope.timer = $timeout($scope.updateGraph, 5000);
+      //$scope.chartConfig.title.text = $scope.feed.label;
+    }
+
+    init(feed, stream);
 
     console.log("timezoneOffset");
-    Highcharts.setOptions({
-        global: {
-            timezoneOffset: (new Date()).getTimezoneOffset()
-        }
-    });
 
     $scope.user = userService.getUser();
 
@@ -31,25 +106,7 @@ define(["angular"], function(angular) {
     $scope.updateTimeWindow = function () {
         $scope.chartConfig.xAxis.currentMin = max  - $scope.currentTimeWindow.secs;
         $scope.chartConfig.xAxis.currentMax = max;
-    }
-
-    feedService.getFeed($routeParams.sensorId, $routeParams.feedId).success(
-        function(data, status, headers, response) {
-            console.log(data);
-            $scope.feed = data;
-
-            if ($scope.feed.alertConfig === null) {
-                $scope.feed.alertConfig = {};
-                $scope.feed.alertConfig.status = false;
-                $scope.feed.alertConfig.min =0;
-                $scope.feed.alertConfig.max =0;
-            } else $scope.feed.alertConfig.status = true;
-
-            $scope.chartConfig.series[0].name = $scope.feed.feedId;
-            $rootScope.pageTitle = $scope.feed.feedId;
-            //$scope.chartConfig.title.text = $scope.feed.label;
-        }
-    );
+    };
 
     $scope.editFeed = function(feedId) {
 
@@ -97,7 +154,6 @@ define(["angular"], function(angular) {
     };
 
     var max;
-    var stream = [];
 
     $scope.addPoints = function () {
         var point =  {
@@ -107,100 +163,13 @@ define(["angular"], function(angular) {
         feedService.postData($scope.feed.sensor.sensorId, $scope.feed.feedId, point);
     };
 
-      $scope.chartConfig = {
-          options: {
-
-              global: {
-                  useUTC: false
-              },
 
 
-
-              chart: {
-                  type: 'line',
-                  zoomType: 'x'
-              }
-          },
-          credits: {
-              enabled: false
-          },
-          series: [{
-              name: "",
-
-              color: '#7ECE25',
-
-              data: (function() {
-
-					var stream = [];
-
-                    feedService.getStream($routeParams.sensorId, $routeParams.feedId).success(
-						function(data, status, headers, response) {
-
-							stream = data;
-
-							var series = $scope.chartConfig.series[0];
-
-							if (stream.length > 0) {
-								max = stream[stream.length - 1].x;
-							} else max = (new Date()).getTime();
-
-							series.data = stream;
-
-							$scope.chartConfig.xAxis.currentMin = max  - minute;
-							$scope.chartConfig.xAxis.currentMax = max;
-
-							$scope.timer = $timeout($scope.updateGraph, 5000);
-						}
-					);
-
-					return stream;
-              })()
-          }],
-          title: {
-              text: ''
-          },
-          xAxis: {
-              currentMin: max - 60000,
-              currentMax: max,
-              //minRange: 1,
-              type: 'datetime',
-              tickPixelInterval: 150
-
-          },
-
-          loading: false
-      }
-
-      $scope.updateGraph = function () {
-
-        if ($routeParams.feedId!=undefined) {
-            feedService.getStream($routeParams.sensorId, $routeParams.feedId).success(
-				function(data, status, headers, response) {
-
-					stream = data;
-
-					var series = $scope.chartConfig.series[0];
-
-					if (stream.length > 0) {
-						max = stream[stream.length - 1].x;
-					} else max = (new Date()).getTime();
-
-					series.data = stream;
-
-					$scope.chartConfig.xAxis.currentMin = max  - $scope.currentTimeWindow.secs;
-					$scope.chartConfig.xAxis.currentMax = max;
-
-					$scope.timer = $timeout($scope.updateGraph, 5000);
-				}
-			);
-        }
-
-      }
-      $scope.pauseStream = function () {
-          $timeout.cancel($scope.timer);
-      }
+    $scope.pauseStream = function () {
+      $timeout.cancel($scope.timer);
+    };
   };
-  FeedCtrl.$inject = ["$rootScope", "$scope", "userService", "feedService", "$routeParams", "$timeout", "$location"];
+  FeedCtrl.$inject = ["$rootScope", "$scope", "userService", "feedService", "$routeParams", "$timeout", "$location", "feed", "stream"];
 
   return {
     FeedCtrl: FeedCtrl

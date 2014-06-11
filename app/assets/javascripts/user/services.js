@@ -1,85 +1,76 @@
 /**
  * User service, exposes user model to the rest of the app.
  */
-define(["angular", "common"], function(angular) {
-  var mod = angular.module("user.services", ["ngRoute", "ngCookies", "yourprefix.common"]);
+define(['angular', 'common'], function(angular) {
+  'use strict';
 
-  mod.factory("userService", ["$http", "$q", "playRoutes", "$cookieStore", "$cookies", function($http, $q, playRoutes, $cookieStore, $cookies) {
-    var UserService = function() {
-      var self = this;
-      var user;
-      var token;
+  var mod = angular.module('user.services', ['ngRoute', 'ngCookies',  'multicast.common']);
+  mod.factory('userService', ['$http', '$q', '$cookies', '$cookieStore', 'playRoutes', function($http, $q, $cookies, $cookieStore, playRoutes) {
 
+    var user, token;
 
-        //self.setAuthHeader = function (authToken) {
-        //    console.log('format header');
-        //    $http.defaults.headers.common['X-AUTH-TOKEN'] = authToken;
-        //}
-
-      self.loginUser = function(credentials) {
-        //return playRoutes.controllers.UserCtrl.login().post(credentials);
-
-          return playRoutes.controllers.SecurityCtrl.login().post(credentials).then(function(response) {
-              // return promise so we can chain easily
-              self.token = response.data.authToken;
-              //$cookieStore.remove('authToken');
-              //$cookies.authToken = self.token;
-              console.log('cookie token:');
-              console.log($cookies);
-              //console.log(self.token);
-              // in a real app we could use the token to fetch the user data
-              //self.setAuthHeader(self.token);
-              return playRoutes.controllers.UserCtrl.getUser().get();
-          }).then(function(response) {
-                  //user = response.data; // Extract user data from user() request
-                  //user.email = credentials.email;
-                  self.user = response.data;
-                  $cookieStore.put('user', self.user);
-                  //$cookies.user = self.user;
-                  console.log('cookie user:');
-                  console.log($cookies);
-                  return self.user;
-          });
-      };
-
-      self.cleanAuth = function() {
-          self.token  = undefined;
-          self.user   = undefined;
+    function clean() {
+          // Logout on server in a real app
+          token = undefined;
+          user = undefined;
           $cookieStore.remove('authToken');
           $cookieStore.remove('user');
-      }
+    }
 
-      self.logout = function() {
-        return playRoutes.controllers.SecurityCtrl.logout().post().then(
-            function() {
-                self.cleanAuth();
+    return {
+        loginUser : function(credentials) {
+            return playRoutes.controllers.SecurityCtrl.login().post(credentials).then(function(response) {
+              // return promise so we can chain easily
+              token = response.data.authToken;
+              // in a real app we could use the token to fetch the user data
+              return playRoutes.controllers.UserCtrl.getUser().get();
+            }).then(function(response) {
+              user = response.data; // Extract user data from user() request
+              $cookieStore.put('user', user);
+              return user;
+            });
+        },
+
+        cleanAuth: function() {
+            clean();
+        },
+
+        logout: function() {
+            return playRoutes.controllers.SecurityCtrl.logout().post().then(
+                function() {
+                    clean();
+                },
+                function() {
+                    clean();
+                }
+            );
+        },
+
+        getToken : function() {
+            if (token===undefined) {
+                token = $cookies.authToken;
             }
-        )
+            return token;
+        },
 
-      };
-
-      self.getToken = function() {
-        if (self.token===undefined) {
-            self.token = $cookies.authToken;
+        getUser : function() {
+            if (user===undefined) {
+                user = $cookieStore.get('user');
+            }
+            return user;
         }
-        return self.token;
-      }
-
-      self.getUser = function() {
-          if (self.user===undefined) {
-              self.user = $cookieStore.get('user');
-          }
-          return self.user;
-      };
     };
-    return new UserService();
   }]);
-
-  mod.constant("userResolve", {
-    checkAuth: ["$q", "userService", function($q, userService) {
+  /**
+   * Add this object to a route definition to only allow resolving the route if the user is
+   * logged in. This also adds the contents of the objects as a dependency of the controller.
+   */
+  mod.constant('userResolve', {
+    user: ['$q', 'userService', function($q, userService) {
       var deferred = $q.defer();
-      if (userService.getUser()) {
-        deferred.resolve();
+      var user = userService.getUser();
+      if (user) {
+        deferred.resolve(user);
       } else {
         deferred.reject();
       }
@@ -89,12 +80,12 @@ define(["angular", "common"], function(angular) {
   /**
    * If the current route does not resolve, go back to the start page.
    */
-  var handleRouteError = function($rootScope, $location) {
-    $rootScope.$on("$routeChangeError", function(e, next, current) {
-      $location.path("/");
-    });
-  };
-  handleRouteError.$inject = ["$rootScope", "$location"];
-  mod.run(handleRouteError);
+  //var handleRouteError = function($rootScope, $location) {
+  //  $rootScope.$on('$routeChangeError', function(/*e, next, current*/) {
+  //    $location.path('/');
+  //  });
+  //};
+  //handleRouteError.$inject = ['$rootScope', '$location'];
+  //mod.run(handleRouteError);
   return mod;
 });

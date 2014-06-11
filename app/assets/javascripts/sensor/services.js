@@ -2,10 +2,38 @@
  * User service, exposes user model to the rest of the app.
  */
 define(["angular", "common"], function(angular) {
-  var mod = angular.module("sensor.services", ["ngRoute", "yourprefix.common"]);
 
-  mod.factory("sensorService", ["$http", "$q", "playRoutes", function($http, $q, playRoutes) {
-    var SensorService = function() {
+  'use strict';
+
+    var mod = angular.module('sensor.services', ['ngRoute', 'multicast.common']);
+
+  mod.factory('sensorService', ['$http', '$q', 'playRoutes', function($http, $q, playRoutes) {
+
+    return {
+
+        getAllSensors: function() {
+            return playRoutes.controllers.SensorCtrl.getAllSensors().get();
+        },
+
+        createSensor: function(data) {
+          return playRoutes.controllers.SensorCtrl.createSensor().post(data);
+        },
+
+        getSensor: function(sensorId) {
+            return playRoutes.controllers.SensorCtrl.getSensor(sensorId).get();
+        },
+
+        updateSensor: function(sensorId, data) {
+            return playRoutes.controllers.SensorCtrl.updateSensor(sensorId).post(data);
+        },
+
+        deleteSensor: function(sensorId) {
+          return playRoutes.controllers.SensorCtrl.deleteSensor(sensorId)['delete']();
+        }
+
+    };
+
+    /*var SensorService = function() {
 
         var self = this;
 
@@ -31,18 +59,18 @@ define(["angular", "common"], function(angular) {
 
     };
 
-    return new SensorService();
+    return new SensorService();*/
   }]);
 
   /**
    * If the current route does not resolve, go back to the start page.
    */
-  var handleRouteError = function($rootScope, $location) {
-    $rootScope.$on("$routeChangeError", function(e, next, current) {
-      //$location.path("/");
+  /*var handleRouteError = function($rootScope, $location) {
+    $rootScope.$on("$routeChangeError", function() {
+      $location.path("/");
     });
   };
   handleRouteError.$inject = ["$rootScope", "$location"];
-  mod.run(handleRouteError);
+  mod.run(handleRouteError);*/
   return mod;
 });

@@ -4,15 +4,17 @@
 define(["angular"], function(angular) {
   "use strict";
 
-  var SensorCtrl = function($rootScope, $scope, userService, sensorService, feedService, $routeParams, $location) {
-    $scope.user = userService.getUser();
+  var SensorCtrl = function($rootScope, $scope, userService, sensorService, feedService, $routeParams, $location, sensor) {
 
-    sensorService.getSensor($routeParams.sensorId).success(
-      function(data, status, headers, response) {
+      $scope.sensor = sensor;
+      $rootScope.pageTitle = $scope.sensor.label;
+
+    /*sensorService.getSensor($routeParams.sensorId).success(
+      function(data) {
           $scope.sensor = data;
           $rootScope.pageTitle = $scope.sensor.label;
       }
-    );
+    );*/
 
     $scope.editSensor = function(sensorId) {
         $scope.modal = {};
@@ -59,7 +61,7 @@ define(["angular"], function(angular) {
         $scope.modal = {};
 
         $scope.feed = {};
-        $scope.feed.alertConfig = {}
+        $scope.feed.alertConfig = {};
         $scope.feed.alertConfig.status = false;
         $scope.feed.alertConfig.min = 0;
         $scope.feed.alertConfig.max = 0;
@@ -67,7 +69,7 @@ define(["angular"], function(angular) {
         $scope.modal.title = 'New Feed...';
         $scope.modal.ok = function(feed) {
             feedService.createFeed(sensorId, feed).success(
-                function(data, status, headers, response) {
+                function(data/*, status, headers, response*/) {
                     angular.element("#feedModal").modal("hide");
                     angular.element("#feedModal").on('hidden.bs.modal', function () {
                         $location.path('dashboard/'.concat(sensorId).concat('/feeds/').concat(data.feedId));
@@ -100,7 +102,7 @@ define(["angular"], function(angular) {
                     angular.element("#confirmModal").on('hidden.bs.modal', function () {
                         console.log('dashboard/'.concat(sensorId));
                         sensorService.getSensor($routeParams.sensorId).success(
-                            function(data, status, headers, response) {
+                            function(data/*, status, headers, response*/) {
                                 $scope.sensor = data;
                                 $rootScope.pageTitle = $scope.sensor.label;
                             }
@@ -117,7 +119,7 @@ define(["angular"], function(angular) {
     };
 
   };
-  SensorCtrl.$inject = ["$rootScope", "$scope", "userService", "sensorService","feedService", "$routeParams", "$location"];
+  SensorCtrl.$inject = ['$rootScope', '$scope', 'userService', 'sensorService', 'feedService', '$routeParams', '$location', 'sensor'];
 
   return {
     SensorCtrl: SensorCtrl

@@ -19,6 +19,7 @@ public class Notification implements Serializable {
     private String type;
     private Data data;
     private AlertConfiguration configuration;
+    private boolean delivered;
 
     public Notification(long timestamp, long alertId, String type, CurrentData current) {
         last_id++;

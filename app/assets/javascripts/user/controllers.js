@@ -1,47 +1,34 @@
 /**
  * User controllers.
  */
-define(["angular"], function(angular) {
-  "use strict";
+define([], function() {
+  'use strict';
 
-  var LoginCtrl = function($rootScope, $scope, $cookieStore, $location, userService, $httpProvider) {
-    $scope.credentials = {};
+  var LoginCtrl = function($rootScope, $scope, $location, userService) {
 
+      $rootScope.pageTitle = 'Login';
+
+      $scope.credentials = {};
 
       $scope.$watch(function() {
           var user = userService.getUser();
           return user;
       }, function(user) {
-          if (user!=undefined) {
+          if (user!==undefined) {
               $location.path("/dashboard");
           }
       }, true);
 
     $scope.login = function(credentials) {
-
-        userService.loginUser(credentials).then(function(user) {
-            $location.path("/dashboard");
-        });
-
+      userService.loginUser(credentials).then(function() {
+        $location.path('/dashboard');
+      });
     };
   };
-  LoginCtrl.$inject = ["$rootScope", "$scope", "$cookieStore", "$location", "userService"];
-
-    var SignUpCtrl = function($scope, $location, userService) {
-        $scope.credentials = {};
-
-        $scope.login = function(credentials) {
-            userService.loginUser(credentials).then(function(user) {
-                $location.path("/dashboard");
-            });
-        };
-    };
-    SignUpCtrl.$inject = ["$rootScope", "$scope", "$location", "userService"];
-
+  LoginCtrl.$inject = ['$rootScope', '$scope', '$location', 'userService'];
 
   return {
-    LoginCtrl: LoginCtrl,
-    SignUpCtrl: SignUpCtrl
+    LoginCtrl: LoginCtrl
   };
 
 });

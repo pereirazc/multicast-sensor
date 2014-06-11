@@ -15,11 +15,25 @@ query "Sensors" (String userId)
     sensor: Sensor(owner == user)
 end
 
-query "NotificationsByUser" (String userId, long threshold)
+query "DeviceById" (String userId, String deviceId)
+    user: User(this.userId == userId)
+    device: Device(this.deviceId == deviceId, owner == user)
+end
+
+query "NotificationsByUser" (String userId, String deviceId)
+    $user: User(this.userId == userId)
+    $device: Device(this.deviceId == deviceId, owner == $user)
+    $sensor: Sensor(owner == $user)
+    $feed: Feed(this.sensor == $sensor)
+    notification: Notification(data.feed == $feed)
+    not Delivered(this.notification==notification, device == $device)
+end
+
+query "NotificationById" (String userId, long notificationId)
     $user: User(this.userId == userId)
     $sensor: Sensor(owner == $user)
     $feed: Feed(this.sensor == $sensor)
-    notification: Notification(id > threshold, data.feed == $feed)
+    notification: Notification(id == notificationId, data.feed == $feed)
 end
 
 query "AllNotifications" (long threshold)

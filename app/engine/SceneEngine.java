@@ -11,7 +11,6 @@ import org.drools.io.ResourceFactory;
 import org.drools.runtime.StatefulKnowledgeSession;
 import play.Play;
 
-import java.io.File;
 import java.io.InputStream;
 
 public class SceneEngine extends Thread {

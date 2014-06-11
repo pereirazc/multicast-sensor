@@ -1,0 +1,64 @@
+// `main.js` is the file that sbt-web will use as an entry point
+(function (requirejs) {
+  'use strict';
+
+  // -- RequireJS config --
+  requirejs.config({
+    // Packages = top-level folders; loads a contained file named 'main.js"
+    packages: ['common', 'home', 'user', 'dashboard', 'sensor', 'feed'],
+    shim: {
+      'jsRoutes': {
+        deps: [],
+        // it's not a RequireJS module, so we have to tell it what var is returned
+        exports: 'jsRoutes'
+      },
+      // Hopefully this all will not be necessary but can be fetched from WebJars in the future
+      'angular': {
+        deps: ['jquery'],
+        exports: 'angular'
+      },
+      'angular-route': ['angular'],
+      'angular-cookies': ['angular'],
+      'angular-touch': ['angular'],
+      'highcharts': {
+          deps: ['jquery'],
+          exports: 'Highcharts'
+
+        },
+      'highcharts-ng': ['highcharts','angular'],
+      'bootstrap': ['jquery'],
+      "range-slider": ["angular", "jquery"],
+      "bootstrap-switch": ["jquery"],
+      "ng-switch": ["angular", "bootstrap-switch"]
+    },
+    paths: {
+      'requirejs': ['../lib/requirejs/require'],
+      'jquery': ['../lib/jquery/jquery'],
+      'angular': ['../lib/angularjs/angular'],
+      'angular-route': ['../lib/angularjs/angular-route'],
+      'angular-touch': ['../lib/angularjs/angular-touch'],
+      'angular-cookies': ['../lib/angularjs/angular-cookies'],
+      'highcharts': ['../lib/highcharts/highcharts'],
+      'highcharts-ng': ['../lib/highcharts-ng/highcharts-ng'],
+      'bootstrap': ['../lib/bootstrap/js/bootstrap'],
+      "range-slider": "//rawgithub.com/danielcrisp/angular-rangeslider/v0.0.7/angular.rangeSlider",
+      "bootstrap-switch": "//rawgithub.com/nostalgiaz/bootstrap-switch/v3.0.0/dist/js/bootstrap-switch",
+      "ng-switch": "//rawgithub.com/frapontillo/angular-bootstrap-switch/0.3.0-alpha.2/dist/angular-bootstrap-switch",
+      'jsRoutes': ['/jsroutes']
+    }
+  });
+
+  requirejs.onError = function (err) {
+    console.log(err);
+  };
+
+  // Load the app. This is kept minimal so it doesn't need much updating.
+  require([ 'angular', 'angular-cookies', 'angular-touch', 'angular-route', 'jquery', 'bootstrap',
+            'highcharts', 'highcharts-ng', 'range-slider', 'bootstrap-switch', 'ng-switch', './app'],
+    function (angular) {
+
+      console.log(angular);
+      angular.bootstrap(document, ['app']);
+    }
+  );
+})(requirejs);

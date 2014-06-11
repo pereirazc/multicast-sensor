@@ -19,6 +19,28 @@ import static play.libs.Json.toJson;
 
 public class APICtrl extends Controller {
 
+
+    //POST
+    @With(SecurityCtrl.class)
+    public static Result markAsDelivered() {
+
+        JsonNode json = request().body().asJson();
+        if(json == null) return badRequest("Expecting Json data");
+        if (!json.has("device")) return badRequest("device not specified");
+        QueryResultsRow r = QueryHelper.getDevice( SceneEngine.getInstance().getSession(), SecurityCtrl.getUser().getUserId(), json.findPath("device").asText());
+        if (r == null) return badRequest("device not found!");
+        Device device = (Device) r.get("device");
+        ArrayNode notifications = (ArrayNode) json.get("notifications");
+        Notification notification;
+        for(JsonNode notficationNode: notifications) {
+            r = QueryHelper.getNotification( SceneEngine.getInstance().getSession(), SecurityCtrl.getUser().getUserId(), notficationNode.asLong());
+            if (r == null) return badRequest("notification not found!");
+            notification = (Notification) r.get("notification");
+            SceneEngine.getInstance().getSession().insert(new Delivered(device, notification));
+        }
+        return ok().as("application/json");
+    }
+
     //GET
     @With(SecurityCtrl.class)
     public static Result getStream(String sensorId, String feedId) {
@@ -36,13 +58,21 @@ public class APICtrl extends Controller {
 
     //GET
     @With(SecurityCtrl.class)
-    public static Result getAlerts(Long min) {
+    public static Result getAlerts(String deviceId) {
+
         User user = SecurityCtrl.getUser();
+
+        if (deviceId == null) return badRequest("device not specified");
+        QueryResultsRow r = QueryHelper.getDevice( SceneEngine.getInstance().getSession(), SecurityCtrl.getUser().getUserId(), deviceId);
+        if (r == null) return badRequest("device not found!");
+        Device device = (Device) r.get("device");
+
+
         ArrayNode result = JsonNodeFactory.instance.arrayNode();
-        QueryResults results = QueryHelper.getNotifications(SceneEngine.getInstance().getSession(), user.getUserId(), min);
+        QueryResults results = QueryHelper.getNotifications(SceneEngine.getInstance().getSession(), user.getUserId(), deviceId);
         if (results != null) {
-            for(QueryResultsRow r: results) {
-                JsonNode current = ((Notification) r.get("notification")).toJson();
+            for(QueryResultsRow n: results) {
+                JsonNode current = ((Notification) n.get("notification")).toJson();
                 result.add(current);
             }
         }

@@ -7,9 +7,14 @@ import java.io.Serializable;
  */
 public class Device implements Serializable {
 
-    private String token;
+    private String deviceId;
     private String os;
     private User owner;
+
+    public Device(User user, String deviceId) {
+        this.owner = user;
+        this.deviceId = deviceId;
+    }
 
     public String getOs() {
         return os;
@@ -19,13 +24,6 @@ public class Device implements Serializable {
         this.os = os;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
 
     public User getOwner() {
         return owner;
@@ -36,4 +34,11 @@ public class Device implements Serializable {
     }
 
 
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
 }

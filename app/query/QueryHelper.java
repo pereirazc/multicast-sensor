@@ -30,8 +30,29 @@ public class QueryHelper {
         else return null;
     }
 
-    public static QueryResults getNotifications(StatefulKnowledgeSession ksession, String userId, long min) {
-        return ksession.getQueryResults("NotificationsByUser", new Object[] {userId, min});
+    public static QueryResultsRow getDevice(StatefulKnowledgeSession ksession, String userId, String deviceId) {
+        QueryResults results = ksession.getQueryResults("DeviceById", new Object[] {  userId, deviceId } );
+        Iterator<QueryResultsRow> i = results.iterator();
+        if (i.hasNext()) {
+            return i.next();
+        }
+        else return null;
+    }
+    public static QueryResultsRow getNotification(StatefulKnowledgeSession ksession, String userId, long notificationId) {
+        QueryResults results = ksession.getQueryResults("NotificationById", new Object[] {  userId, notificationId } );
+        Iterator<QueryResultsRow> i = results.iterator();
+        if (i.hasNext()) {
+            return i.next();
+        }
+        else return null;
+    }
+
+    public static QueryResults getUndeliveredNotifications(StatefulKnowledgeSession ksession, String userId, String deviceId) {
+        return ksession.getQueryResults("NotificationsByUser", new Object[] {userId, deviceId});
+    }
+
+    public static QueryResults getNotifications(StatefulKnowledgeSession ksession, String userId, String deviceId) {
+        return ksession.getQueryResults("NotificationsByUser", new Object[] {userId, deviceId});
     }
 
     public static QueryResults getAllNotifications(StatefulKnowledgeSession ksession, long min) {

@@ -2,12 +2,8 @@
  * User package module.
  * Manages all sub-modules so other RequireJS modules only have to import the package.
  */
-define(["angular", "./routes", "./controllers", "./services"], function(angular, routes, controllers, services) {
-  var mod = angular.module("yourprefix.user", ["ngRoute", "ngCookies", "user.routes", "user.services"]);
+define(['angular', './routes', './services'], function(angular) {
+  'use strict';
 
-  mod.controller("LoginCtrl", controllers.LoginCtrl);
-  mod.controller("SignUpCtrl", controllers.DashboardCtrl);
-
-  return mod;
-
+  return angular.module('multicast.user', ['ngCookies', 'ngRoute', 'user.routes', 'user.services']);
 });

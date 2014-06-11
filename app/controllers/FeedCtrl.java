@@ -1,14 +1,12 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.google.gson.Gson;
 import engine.SceneEngine;
 import models.AlertConfiguration;
 import models.Feed;
 import models.Sensor;
 import models.User;
 import org.drools.runtime.rule.QueryResultsRow;
-import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.With;
@@ -92,7 +90,7 @@ public class FeedCtrl extends Controller {
                     }
                 }
                 SceneEngine.getInstance().getSession().update(r.getFactHandle("feed"), feed);
-                JsonNode result = Json.parse((new Gson()).toJson(feed));
+                JsonNode result = toJson(feed);
                 return ok(result).as("application/json");
             } else return badRequest("Couldn't find Feed");
         } else return badRequest("Expecting Json data");

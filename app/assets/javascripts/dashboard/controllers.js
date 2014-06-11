@@ -1,23 +1,28 @@
 /**
  * Dashboard controllers.
  */
-define(["angular"], function(angular) {
-  "use strict";
+define(['angular'], function(angular) {
+  'use strict';
 
-  var DashboardCtrl = function($rootScope, $scope, userService, sensorService, $location) {
+  var DashboardCtrl = function($rootScope, $scope, userService, sensorService, $location, user, sensors) {
+
+    console.log(user);
+    console.log(sensors);
+    $scope.user = user;
+    $scope.sensors = sensors;
 
     $rootScope.pageTitle = "Multicast Sensor";
 
-    $scope.user = userService.getUser();
+    //$scope.user = userService.getUser();
 
-    $scope.sensors = [];
+    //$scope.sensors = [];
 
 	//$scope.sensors = sensorService.getAllSensors()
-    sensorService.getAllSensors().success(
-		function (data, status, headers, response) {
+    /*sensorService.getAllSensors().success(
+		function (data) {
 			$scope.sensors = data;
 		}
-	);
+	);*/
 	
     $scope.createSensor = function () {
 
@@ -27,7 +32,7 @@ define(["angular"], function(angular) {
 
         $scope.modal.ok = function(sensor) {
             sensorService.createSensor(sensor).success(
-				function (data, status, headers, response) {
+				function (data/*, status, headers, response*/) {
                     angular.element("#sensorModal").modal("hide");
                     angular.element("#sensorModal").on('hidden.bs.modal', function () {
                         $location.path('dashboard/'.concat(data.sensorId));
@@ -59,7 +64,7 @@ define(["angular"], function(angular) {
                     angular.element("#confirmModal").modal("hide");
                     angular.element("#confirmModal").on('hidden.bs.modal', function () {
                         sensorService.getAllSensors($rootScope.authToken).success(
-                            function(data, status, headers, response) {
+                            function(data/*, status, headers, response*/) {
                                 $scope.sensors = data;
                             }
                         );
@@ -74,7 +79,7 @@ define(["angular"], function(angular) {
     };
 
   };
-  DashboardCtrl.$inject = ["$rootScope", "$scope", "userService", "sensorService", "$location"];
+  DashboardCtrl.$inject = ["$rootScope", "$scope", "userService", "sensorService", "$location", "user", "sensors"];
 
   /*var AdminDashboardCtrl = function($scope, userService, sensorService, $location) {
 

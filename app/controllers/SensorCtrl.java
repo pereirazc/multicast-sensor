@@ -38,7 +38,6 @@ public class SensorCtrl extends Controller {
         User user = SecurityCtrl.getUser();
         QueryResultsRow r = QueryHelper.getSensor(SceneEngine.getInstance().getSession(), user.getUserId(), sensorId);
         if (r != null) {
-
             Sensor sensor = (Sensor) r.get("sensor");
             JsonNode result = toJson(sensor);
             QueryResults results = QueryHelper.getAllFeeds(SceneEngine.getInstance().getSession(), user.getUserId(), sensorId);
@@ -48,7 +47,7 @@ public class SensorCtrl extends Controller {
             }
             ((ObjectNode) result).put("feeds", toJson(feeds));
             return ok(result).as("application/json");
-        } else return unauthorized("unauthorized");
+        } else return badRequest("Couldn't find the sensor for this user");
     }
 
     //POST
@@ -88,7 +87,7 @@ public class SensorCtrl extends Controller {
         if (r != null) {
             SceneEngine.getInstance().getSession().retract(r.getFactHandle("sensor"));
             return ok();
-        } else return badRequest("Couldn't find Sensor");
+        } else return badRequest("Couldn't find this sensor for this user");
     }
 
     //POST
@@ -103,7 +102,7 @@ public class SensorCtrl extends Controller {
             result.put("sensorId", sensor.getSensorId());
             SceneEngine.getInstance().getSession().update(r.getFactHandle("sensor"), sensor);
             return ok(result).as("application/json");
-        } else return badRequest("Couldn't find Sensor");
+        } else return badRequest("Couldn't find this sensor for this user");
     }
 
 }

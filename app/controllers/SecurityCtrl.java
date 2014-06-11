@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import engine.SceneEngine;
 import models.Auth;
+import models.Device;
 import models.User;
 import org.drools.FactHandle;
 import org.drools.runtime.rule.QueryResultsRow;
@@ -20,7 +21,7 @@ public class SecurityCtrl extends Action.Simple {
     public final static String AUTH_TOKEN_HEADER = "X-AUTH-TOKEN";
     public static final String AUTH_TOKEN = "authToken";
 
-    public F.Promise<SimpleResult> call(Http.Context ctx) throws Throwable {
+    public F.Promise<Result> call(Http.Context ctx) throws Throwable {
         User user = null;
         String[] authTokenHeaderValues = ctx.request().headers().get(AUTH_TOKEN_HEADER);
         if ((authTokenHeaderValues != null) && (authTokenHeaderValues.length == 1) && (authTokenHeaderValues[0] != null)) {
@@ -36,7 +37,7 @@ public class SecurityCtrl extends Action.Simple {
                 }
             }
         }
-        return F.Promise.pure((SimpleResult) unauthorized("unauthorized"));
+        return F.Promise.pure((Result) unauthorized("unauthorized"));
     }
 
     public static User getUser() {
@@ -49,21 +50,27 @@ public class SecurityCtrl extends Action.Simple {
 
     public static Result login() {
         JsonNode json = request().body().asJson();
-        if(json != null) {
-            User user = QueryHelper.getUserByMailAndPassword(SceneEngine.getInstance().getSession(),
-                    json.findPath("email").asText(),
-                    json.findPath("password").asText()
-            );
-            if (user != null) {
-                Auth auth = new Auth(user);
-                SceneEngine.getInstance().getSession().insert(auth);
-                ObjectNode authTokenJson = Json.newObject();
-                authTokenJson.put(AUTH_TOKEN, auth.getToken());
-                response().setCookie(AUTH_TOKEN, auth.getToken());
-                return ok(authTokenJson);
+        if(json == null) return badRequest("Expecting Json data");
+        User user = QueryHelper.getUserByMailAndPassword(SceneEngine.getInstance().getSession(),
+                json.findPath("email").asText(),
+                json.findPath("password").asText()
+        );
+        if (user == null) return unauthorized("User not found");
+        Auth auth = new Auth(user);
+        SceneEngine.getInstance().getSession().insert(auth);
+        ObjectNode authTokenJson = Json.newObject();
+        authTokenJson.put(AUTH_TOKEN, auth.getToken());
+        response().setCookie(AUTH_TOKEN, auth.getToken());
+
+        if (json.has("device")) {
+            QueryResultsRow r = QueryHelper.getDevice( SceneEngine.getInstance().getSession(), SecurityCtrl.getUser().getUserId(), json.findPath("device").asText());
+            if (r != null) {
+                Device device = (Device) r.get("device");
+                SceneEngine.getInstance().getSession().insert(new Device(user, json.findPath("device").asText()));
             }
-            else return unauthorized("User not found");
-        } else return badRequest("Expecting Json data");
+        }
+        return ok(authTokenJson);
+
     }
 
     @With(SecurityCtrl.class)

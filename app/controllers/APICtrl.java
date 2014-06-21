@@ -19,7 +19,6 @@ import static play.libs.Json.toJson;
 
 public class APICtrl extends Controller {
 
-
     //POST
     @With(SecurityCtrl.class)
     public static Result markAsDelivered() {
@@ -42,6 +41,22 @@ public class APICtrl extends Controller {
     }
 
     //GET
+    public static Result getDeliveredNotifications() {
+        List<Delivered> data = QueryHelper.getDeliveredNotifications(SceneEngine.getInstance().getSession());
+        ArrayNode result = JsonNodeFactory.instance.arrayNode();
+        for(Delivered d: data) {
+            result.add(d.asJson());
+        }
+        return ok(result).as("application/json");
+    }
+
+    //GET
+    public static Result getRegisteredDevices() {
+        List<Device> data = QueryHelper.getRegisteredDevices(SceneEngine.getInstance().getSession());
+        return ok(toJson(data)).as("application/json");
+    }
+
+    //GET
     @With(SecurityCtrl.class)
     public static Result getStream(String sensorId, String feedId) {
         User user = SecurityCtrl.getUser();
@@ -59,15 +74,8 @@ public class APICtrl extends Controller {
     //GET
     @With(SecurityCtrl.class)
     public static Result getAlerts(String deviceId) {
-
         User user = SecurityCtrl.getUser();
-
         if (deviceId == null) return badRequest("device not specified");
-        QueryResultsRow r = QueryHelper.getDevice( SceneEngine.getInstance().getSession(), SecurityCtrl.getUser().getUserId(), deviceId);
-        if (r == null) return badRequest("device not found!");
-        Device device = (Device) r.get("device");
-
-
         ArrayNode result = JsonNodeFactory.instance.arrayNode();
         QueryResults results = QueryHelper.getNotifications(SceneEngine.getInstance().getSession(), user.getUserId(), deviceId);
         if (results != null) {
@@ -80,8 +88,7 @@ public class APICtrl extends Controller {
     }
 
     //GET
-    public static Result getAllAlerts(Long min) {
-        User user = SecurityCtrl.getUser();
+    public static Result getAllAlerts(Long min) { User user = SecurityCtrl.getUser();
         ArrayNode result = JsonNodeFactory.instance.arrayNode();
 
         QueryResults results = QueryHelper.getAllNotifications(SceneEngine.getInstance().getSession(), min);

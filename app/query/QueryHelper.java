@@ -1,11 +1,14 @@
 package query;
 
 import models.Data;
+import models.Delivered;
+import models.Device;
 import models.User;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.rule.QueryResults;
 import org.drools.runtime.rule.QueryResultsRow;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -38,6 +41,16 @@ public class QueryHelper {
         }
         else return null;
     }
+
+    public static List<Delivered> getDeliveredNotifications(StatefulKnowledgeSession ksession) {
+        List<Delivered> d = new ArrayList<Delivered>();
+        QueryResults results = ksession.getQueryResults("DeliveredNotifications", new Object[] { } );
+        for(QueryResultsRow r: results) {
+            d.add( (Delivered) r.get("delivered"));
+        }
+        return d;
+    }
+
     public static QueryResultsRow getNotification(StatefulKnowledgeSession ksession, String userId, long notificationId) {
         QueryResults results = ksession.getQueryResults("NotificationById", new Object[] {  userId, notificationId } );
         Iterator<QueryResultsRow> i = results.iterator();
@@ -45,10 +58,6 @@ public class QueryHelper {
             return i.next();
         }
         else return null;
-    }
-
-    public static QueryResults getUndeliveredNotifications(StatefulKnowledgeSession ksession, String userId, String deviceId) {
-        return ksession.getQueryResults("NotificationsByUser", new Object[] {userId, deviceId});
     }
 
     public static QueryResults getNotifications(StatefulKnowledgeSession ksession, String userId, String deviceId) {
@@ -96,4 +105,18 @@ public class QueryHelper {
         }
         else return null;
     }
+
+    public static List<Device> getRegisteredDevices(StatefulKnowledgeSession ksession) {
+
+        ArrayList<Device> list = new ArrayList<>();
+
+        QueryResults results = ksession.getQueryResults("Devices", new Object[] {  });
+
+        for (QueryResultsRow r: results) {
+            list.add( (Device) r.get("device") );
+        }
+
+        return list;
+    }
+
 }

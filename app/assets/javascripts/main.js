@@ -41,9 +41,9 @@
       'highcharts': ['../lib/highcharts/highcharts'],
       'highcharts-ng': ['../lib/highcharts-ng/highcharts-ng'],
       'bootstrap': ['../lib/bootstrap/js/bootstrap'],
-      "range-slider": "//rawgithub.com/danielcrisp/angular-rangeslider/v0.0.7/angular.rangeSlider",
-      "bootstrap-switch": "//rawgithub.com/nostalgiaz/bootstrap-switch/v3.0.0/dist/js/bootstrap-switch",
-      "ng-switch": "//rawgithub.com/frapontillo/angular-bootstrap-switch/0.3.0-alpha.2/dist/angular-bootstrap-switch",
+      "range-slider": "//danielcrisp.github.io/angular-rangeslider/angular.rangeSlider",
+      "bootstrap-switch": "../lib/bootstrap-switch/js/bootstrap-switch.min",
+      "ng-switch": "../lib/angular-bootstrap-switch/angular-bootstrap-switch.min",
       'jsRoutes': ['/jsroutes']
     }
   });

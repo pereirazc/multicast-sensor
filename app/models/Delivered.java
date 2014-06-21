@@ -1,5 +1,9 @@
 package models;
 
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import static play.libs.Json.toJson;
+
 /**
  * Created by pereirazc on 08/06/14.
  */
@@ -28,4 +32,12 @@ public class Delivered {
     public void setDevice(Device device) {
         this.device = device;
     }
+
+    public ObjectNode asJson() {
+        ObjectNode node = JsonNodeFactory.instance.objectNode();
+        node.put("device", toJson(device));
+        node.put("notification", notification.getId());
+        return node;
+    }
+
 }

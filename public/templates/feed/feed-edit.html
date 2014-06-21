@@ -13,12 +13,6 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-2" for="desc">Description</label>
-                    <div class="col-md-8">
-                        <textarea id="desc" class="form-control input-md" ng-model="feed.description" class="form-control" ng-model="feed.description"/>
-                    </div>
-                </div>
-                <div class="form-group">
                     <label class="control-label col-md-2" for="alert">Alerts</label>
                     <div class="col-md-8">
                         <input
@@ -27,7 +21,7 @@
                                 type="checkbox"
                                 switch-animate="true"
                                 switch-size="small" >
-                        <div id="alert" range-slider min="0" max="100" disabled="!feed.alertConfig.status" model-min="feed.alertConfig.min" model-max="feed.alertConfig.max"></div>
+                        <div id="alert" range-slider min="-100" max="100" disabled="!feed.alertConfig.status" step="0.5" decimal-places="1" model-min="feed.alertConfig.min" model-max="feed.alertConfig.max"></div>
                     </div>
                 </div>
             </form>

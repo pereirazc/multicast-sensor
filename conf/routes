@@ -12,6 +12,11 @@ GET           /jsroutes.js                            controllers.Application.js
 # Routes used by Angular
 # ~~~~
 
+#API DEBUG
+GET           /api/admin/devices                      controllers.APICtrl.getRegisteredDevices
+GET           /api/admin/alerts/delivered             controllers.APICtrl.getDeliveredNotifications
+GET           /api/admin/alerts                       controllers.APICtrl.getAllAlerts(min: Long)
+
 # Authentication
 POST          /login                                  controllers.SecurityCtrl.login()
 POST          /logout                                 controllers.SecurityCtrl.logout()
@@ -38,7 +43,7 @@ DELETE        /sensors/:sensorId/feeds/:feedId        controllers.FeedCtrl.delet
 GET           /api/:sensorId/:feedId                  controllers.APICtrl.getStream(sensorId: String, feedId: String)
 POST          /api/:sensorId/:feedId                  controllers.APICtrl.postData(sensorId: String, feedId: String)
 GET           /api/alerts                             controllers.APICtrl.getAlerts(deviceId: String)
-GET           /api/alertz                             controllers.APICtrl.getAllAlerts(min: Long)
+POST          /api/alerts                             controllers.APICtrl.markAsDelivered
 
 # Static
 # ~~~~

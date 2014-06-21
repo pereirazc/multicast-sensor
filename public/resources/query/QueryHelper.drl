@@ -36,10 +36,6 @@ query "NotificationById" (String userId, long notificationId)
     notification: Notification(id == notificationId, data.feed == $feed)
 end
 
-query "AllNotifications" (long threshold)
-    notification: Notification(id > threshold)
-end
-
 query "Sensor" (String userId, String sensorId)
     user: User(this.userId == userId)
     sensor: Sensor(owner == user, this.sensorId==sensorId)
@@ -69,3 +65,18 @@ query "FeedStream" (String userId, String sensorId, String feedId)
     accumulate($e: Data(this.feed == feed) over window:length(30),
                 stream: collectList( $e ))
 end
+
+//=============================
+
+query "Devices"
+    device: Device()
+end
+
+query "DeliveredNotifications"
+    delivered: Delivered()
+end
+
+query "AllNotifications" (long threshold)
+    notification: Notification(id > threshold)
+end
+

@@ -38,39 +38,64 @@ define(['angular'], function(angular) {
           loading: false
       };
 
-  $scope.updateGraph = function () {
+      $scope.updateGraph = function () {
 
-      if ($routeParams.feedId!==undefined) {
-          feedService.getStream($routeParams.sensorId, $routeParams.feedId).success(
-              function(data/*, status, headers, response*/) {
+          if ($routeParams.feedId!==undefined) {
+              feedService.getStream($routeParams.sensorId, $routeParams.feedId).success(
+                  function(data/*, status, headers, response*/) {
 
-                  stream = data;
+                      $scope.stream = data;
 
-                  var series = $scope.chartConfig.series[0];
+                      var series = $scope.chartConfig.series[0];
 
-                  if (stream.length > 0) {
-                      max = stream[stream.length - 1].x;
-                  } else {
-                      max = (new Date()).getTime();
+                      if ($scope.stream.length > 0) {
+                          max = $scope.stream[$scope.stream.length - 1].x;
+                          $scope.updateGraph = function () {
+
+                              if ($routeParams.feedId!==undefined) {
+                                  feedService.getStream($routeParams.sensorId, $routeParams.feedId).success(
+                                      function(data/*, status, headers, response*/) {
+
+                                          $scope.stream = data;
+
+                                          var series = $scope.chartConfig.series[0];
+
+                                          if ($scope.stream.length > 0) {
+                                              max = $scope.stream[$scope.stream.length - 1].x;
+                                          } else {
+                                              max = (new Date()).getTime();
+                                          }
+
+                                          series.data = $scope.stream;
+
+                                          $scope.chartConfig.xAxis.currentMin = max  - $scope.currentTimeWindow.secs;
+                                          $scope.chartConfig.xAxis.currentMax = max;
+
+                                          $scope.timer = $timeout($scope.updateGraph, 5000);
+                                      }
+                                  );
+                              }
+
+                          };        } else {
+                          max = (new Date()).getTime();
+                      }
+
+                      series.data = $scope.stream;
+
+                      $scope.chartConfig.xAxis.currentMin = max  - $scope.currentTimeWindow.secs;
+                      $scope.chartConfig.xAxis.currentMax = max;
+
+                      $scope.timer = $timeout($scope.updateGraph, 5000);
                   }
+              );
+          }
 
-                  series.data = stream;
-
-                  $scope.chartConfig.xAxis.currentMin = max  - $scope.currentTimeWindow.secs;
-                  $scope.chartConfig.xAxis.currentMax = max;
-
-                  $scope.timer = $timeout($scope.updateGraph, 5000);
-              }
-          );
-      }
-
-  };
+      };
 
     function init(feed, stream) {
       console.log(feed);
       $scope.feed = feed;
       $rootScope.pageTitle = $scope.feed.feedId;
-
       if ($scope.feed.alertConfig === null) {
           $scope.feed.alertConfig = {};
           $scope.feed.alertConfig.status = false;
@@ -82,7 +107,10 @@ define(['angular'], function(angular) {
 
       $scope.chartConfig.series[0].name = $scope.feed.feedId;
       $scope.stream = stream;
-      $scope.timer = $timeout($scope.updateGraph, 5000);
+      $scope.updateGraph();
+
+      /*$scope.chartConfig.series[0].data = $scope.stream;
+      $scope.timer = $timeout($scope.updateGraph, 5000);*/
       //$scope.chartConfig.title.text = $scope.feed.label;
     }
 

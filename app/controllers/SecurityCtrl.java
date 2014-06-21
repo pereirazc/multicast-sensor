@@ -63,10 +63,12 @@ public class SecurityCtrl extends Action.Simple {
         response().setCookie(AUTH_TOKEN, auth.getToken());
 
         if (json.has("device")) {
-            QueryResultsRow r = QueryHelper.getDevice( SceneEngine.getInstance().getSession(), SecurityCtrl.getUser().getUserId(), json.findPath("device").asText());
-            if (r != null) {
-                Device device = (Device) r.get("device");
-                SceneEngine.getInstance().getSession().insert(new Device(user, json.findPath("device").asText()));
+            String uuid = json.get("device").get("uuid").asText();
+            QueryResultsRow r = QueryHelper.getDevice( SceneEngine.getInstance().getSession(), user.getUserId(), uuid);
+            if (r == null) {
+                Device device = new Device(user, uuid);
+                device.setOs(json.get("device").get("platform").asText());
+                SceneEngine.getInstance().getSession().insert(device);
             }
         }
         return ok(authTokenJson);

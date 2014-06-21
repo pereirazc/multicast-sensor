@@ -8,7 +8,7 @@ define(['angular', './controllers', 'common'], function(angular, controllers) {
   mod.config(['$routeProvider', function($routeProvider) {
     $routeProvider
       .when("/",  {templateUrl: "/assets/templates/home/home.html", controller: controllers.HomeCtrl})
-      .otherwise( {templateUrl: "/assets/templates/home/notFound2.html",
+      .otherwise( {templateUrl: "/assets/templates/home/notFound2.html", controller: controllers.ErrorCtrl,
             resolve: {
                 error: ['$rootScope', function ($rootScope) {
                     console.log('hide navbar');

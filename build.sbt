@@ -30,6 +30,8 @@ libraryDependencies ++= Seq(
   "org.webjars" % "highcharts" % "3.0.10" exclude("org.webjars", "jquery"),
   "org.webjars" % "highcharts-ng" % "0.0.6",
   "org.webjars" % "angular-ui-bootstrap" % "0.11.0-2",
+  "org.webjars" % "bootstrap-switch" % "3.0.1",
+  "org.webjars" % "angular-bootstrap-switch" % "0.3.0-alpha.2",
   "org.webjars" % "font-awesome" % "4.0.3",
   "br.ufes.inf.lprm" % "scene-core" % "0.9.1" excludeAll(ExclusionRule(organization = "org.slf4j"))
 )

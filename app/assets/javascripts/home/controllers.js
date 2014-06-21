@@ -56,9 +56,14 @@ define([], function() {
     FooterCtrl.$inject = ["$scope"];
 
     /** Controls the footer */
-    var ErrorCtrl = function() {
+    var ErrorCtrl = function($scope, $location) {
+
+        $scope.backHome = function () {
+            $location.path('/dashboard');
+        };
 
     };
+    ErrorCtrl.$inject = ['$scope','$location'];
 
     return {
         HeaderCtrl: HeaderCtrl,

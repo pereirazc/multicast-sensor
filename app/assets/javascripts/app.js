@@ -24,19 +24,19 @@ define(['angular', 'home', 'user', 'dashboard', 'sensor', 'feed'], function(angu
                 return config;
             },
 
-            responseError: function(response) {
-                if (response.status === 401) {
+            responseError: function(err) {
+                if (err.status === 401) {
                     // handle the case where the user is not authenticated
                     $injector.get('userService').cleanAuth();
                     $location.path('/login');
                 }
 
-                if (response.status === 400) {
+                if (err.status === 400) {
                     // handle the case where the user is not authenticated
                     $window.location.replace('/error');
                 }
 
-                return response || $q.when(response);
+                return $q.reject(err);
             }
         };
     }]);

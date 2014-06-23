@@ -4,6 +4,12 @@ Multicast Sensor Server 0.1.3
 
 **Changelog:**
 
+* **0.1.5**
+ * Front-end enhancements
+
+* **0.1.4**
+ * Manage delivered notifications
+
 * **0.1.3**
  * Improvement on notifications feature
 

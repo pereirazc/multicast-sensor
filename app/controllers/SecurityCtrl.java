@@ -13,6 +13,7 @@ import play.libs.Json;
 import play.mvc.*;
 import query.QueryHelper;
 
+import static play.libs.Json.toJson;
 import static play.mvc.Controller.request;
 import static play.mvc.Controller.response;
 
@@ -51,6 +52,14 @@ public class SecurityCtrl extends Action.Simple {
     public static Result login() {
         JsonNode json = request().body().asJson();
         if(json == null) return badRequest("Expecting Json data");
+
+        if (
+                (!json.has("email")     || json.get("email").equals("")) ||
+                (!json.has("password")  || json.get("password").equals(""))
+                ) {
+            return badRequest("Incomplete login data");
+        }
+
         User user = QueryHelper.getUserByMailAndPassword(SceneEngine.getInstance().getSession(),
                 json.findPath("email").asText(),
                 json.findPath("password").asText()
@@ -73,6 +82,30 @@ public class SecurityCtrl extends Action.Simple {
         }
         return ok(authTokenJson);
 
+    }
+
+    public static Result signup() {
+        JsonNode json = request().body().asJson();
+        if(json == null) return badRequest("Expecting Json data");
+
+        if (
+                (!json.has("email")     || json.get("email").equals("")) ||
+                (!json.has("firstName") || json.get("firstName").equals("")) ||
+                (!json.has("lastName")  || json.get("lastName").equals("")) ||
+                (!json.has("password")  || json.get("password").equals(""))
+           ) {
+            return badRequest("Incomplete registration data");
+        }
+
+        User user = QueryHelper.getUserByMail(SceneEngine.getInstance().getSession(), json.findPath("email").asText());
+        if (user != null) return status(409, "Username " + json.findPath("email").asText() + " already taken");
+        user = new User();
+        user.setEmail(json.findPath("email").asText());
+        user.setFirstName(json.findPath("firstName").asText());
+        user.setLastName(json.findPath("lastName").asText());
+        user.setPassword(json.findPath("password").asText());
+        SceneEngine.getInstance().getSession().insert(user);
+        return ok(toJson(user)).as("application/json");
     }
 
     @With(SecurityCtrl.class)

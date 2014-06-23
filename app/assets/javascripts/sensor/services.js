@@ -5,7 +5,7 @@ define(["angular", "common"], function(angular) {
 
   'use strict';
 
-    var mod = angular.module('sensor.services', ['ngRoute', 'multicast.common']);
+    var mod = angular.module('sensor.services', ['multicast.common']);
 
   mod.factory('sensorService', ['$http', '$q', 'playRoutes', function($http, $q, playRoutes) {
 
@@ -62,15 +62,5 @@ define(["angular", "common"], function(angular) {
     return new SensorService();*/
   }]);
 
-  /**
-   * If the current route does not resolve, go back to the start page.
-   */
-  /*var handleRouteError = function($rootScope, $location) {
-    $rootScope.$on("$routeChangeError", function() {
-      $location.path("/");
-    });
-  };
-  handleRouteError.$inject = ["$rootScope", "$location"];
-  mod.run(handleRouteError);*/
   return mod;
 });

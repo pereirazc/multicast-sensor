@@ -5,7 +5,10 @@ define([], function() {
     "use strict";
 
     /** Controls the index page */
-    var HomeCtrl = function($scope, $rootScope, userService, $location) {
+    var HomeCtrl = function($scope, $rootScope, userService, $state) {
+
+        console.log('test');
+
         $rootScope.pageTitle = "Welcome";
 
         $scope.$watch(function() {
@@ -13,19 +16,18 @@ define([], function() {
             return user;
         }, function(user) {
             if (user===undefined) {
-                $location.path("/login");
+                $state.go("home.login");
             } else {
-                $location.path("/dashboard");
+                $state.go("home.dashboard");
                 $scope.user = user;
             }
         }, true);
 
-        //$location.path("/dashboard");
     };
-    HomeCtrl.$inject = ["$scope", "$rootScope", "userService", "$location"];
+    HomeCtrl.$inject = ["$scope", "$rootScope", "userService", "$state"];
 
     /** Controls the header */
-    var HeaderCtrl = function($scope, $rootScope, userService, helper, $location) {
+    var HeaderCtrl = function($scope, $rootScope, userService, helper, $state, toaster) {
 
         //$scope.user = $rootScope.user;
         // Wrap the current user from the service in a watch expression
@@ -34,21 +36,29 @@ define([], function() {
             return user;
         }, function(user) {
             if (user===undefined) {
-                $location.path("/login");
+                $state.go("home.login");
             }
             $scope.user = user;
         }, true);
 
         $scope.logout = function() {
+
+            var user = userService.getUser();
+
             userService.logout().then(
                 function() {
-                    $location.path("/login");
+                    toaster.clear();
+                    $state.go("home.login");
+                    toaster.pop('success', "Logout", "Bye " + user.firstName + " " + user.lastName, 1000);
+                },
+                function() {
+                    toaster.pop('error', "Logout", "Failed to log out user " + user.firstName + " " + user.lastName, 30000);
                 }
             );
 
         };
     };
-    HeaderCtrl.$inject = ["$scope","$rootScope", "userService", "helper", "$location", "$log"];
+    HeaderCtrl.$inject = ["$scope","$rootScope", "userService", "helper", "$state", "toaster"];
 
     /** Controls the footer */
     var FooterCtrl = function() {
@@ -56,14 +66,14 @@ define([], function() {
     FooterCtrl.$inject = ["$scope"];
 
     /** Controls the footer */
-    var ErrorCtrl = function($scope, $location) {
+    var ErrorCtrl = function($scope, $state) {
 
         $scope.backHome = function () {
-            $location.path('/dashboard');
+            $state.go('home.dashboard');
         };
 
     };
-    ErrorCtrl.$inject = ['$scope','$location'];
+    ErrorCtrl.$inject = ['$scope','$state'];
 
     return {
         HeaderCtrl: HeaderCtrl,

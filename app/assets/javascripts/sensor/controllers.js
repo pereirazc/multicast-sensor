@@ -4,7 +4,7 @@
 define(["angular"], function(angular) {
   "use strict";
 
-  var SensorCtrl = function($rootScope, $scope, userService, sensorService, feedService, $routeParams, $location, sensor) {
+  var SensorCtrl = function($rootScope, $scope, userService, sensorService, feedService, $state, $stateParams, sensor, toaster) {
 
       $scope.sensor = sensor;
       $rootScope.pageTitle = $scope.sensor.label;
@@ -45,7 +45,10 @@ define(["angular"], function(angular) {
                 function() {
                     angular.element("#confirmModal").modal("hide");
                     angular.element("#confirmModal").on('hidden.bs.modal', function () {
-                        $location.path('dashboard/');
+                        var label = $scope.sensor.label;
+                        toaster.clear();
+                        $state.go('home.dashboard');
+                        toaster.pop('warning', 'Deleted Sensor', 'sensor ' + label + ' (' + sensorId + ')' + ' removed succesfully.', 2000);
                         $scope.$apply();
                     });
                 }
@@ -72,7 +75,8 @@ define(["angular"], function(angular) {
                 function(data/*, status, headers, response*/) {
                     angular.element("#feedModal").modal("hide");
                     angular.element("#feedModal").on('hidden.bs.modal', function () {
-                        $location.path('dashboard/'.concat(sensorId).concat('/feeds/').concat(data.feedId));
+
+                        $state.go('home.feed', {sensorId: sensorId, feedId: data.feedId});
                         $scope.$apply();
                     });
                 }
@@ -84,7 +88,7 @@ define(["angular"], function(angular) {
     };
 
     $scope.feedDetails = function(sensorId, feedId) {
-        $location.path('dashboard/'.concat(sensorId).concat('/feeds/').concat(feedId));
+        $state.go('home.feed', {sensorId: sensorId, feedId: feedId});
     };
 
     $scope.deleteFeed = function(sensorId, feedId) {
@@ -100,8 +104,7 @@ define(["angular"], function(angular) {
                 function() {
                     angular.element("#confirmModal").modal("hide");
                     angular.element("#confirmModal").on('hidden.bs.modal', function () {
-                        console.log('dashboard/'.concat(sensorId));
-                        sensorService.getSensor($routeParams.sensorId).success(
+                        sensorService.getSensor($stateParams.sensorId).success(
                             function(data/*, status, headers, response*/) {
                                 $scope.sensor = data;
                                 $rootScope.pageTitle = $scope.sensor.label;
@@ -119,7 +122,7 @@ define(["angular"], function(angular) {
     };
 
   };
-  SensorCtrl.$inject = ['$rootScope', '$scope', 'userService', 'sensorService', 'feedService', '$routeParams', '$location', 'sensor'];
+  SensorCtrl.$inject = ['$rootScope', '$scope', 'userService', 'sensorService', 'feedService', '$state', '$stateParams', 'sensor', 'toaster'];
 
   return {
     SensorCtrl: SensorCtrl

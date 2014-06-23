@@ -24,6 +24,16 @@ public class QueryHelper {
         else return null;
     }
 
+    public static User getUserByMail(StatefulKnowledgeSession ksession, String mail) {
+        QueryResults results = ksession.getQueryResults("UserByMail", new Object[] {  mail } );
+        Iterator<QueryResultsRow> i = results.iterator();
+        if (i.hasNext()) {
+            QueryResultsRow r = i.next();
+            return (User) r.get("user");
+        }
+        else return null;
+    }
+
     public static QueryResultsRow getUserByToken(StatefulKnowledgeSession ksession, String token) {
         QueryResults results = ksession.getQueryResults("UserByToken", new Object[] {  token } );
         Iterator<QueryResultsRow> i = results.iterator();
@@ -33,7 +43,7 @@ public class QueryHelper {
         else return null;
     }
 
-    public static QueryResultsRow getDevice(StatefulKnowledgeSession ksession, String userId, String deviceId) {
+    public static QueryResultsRow getDevice(StatefulKnowledgeSession ksession, long userId, String deviceId) {
         QueryResults results = ksession.getQueryResults("DeviceById", new Object[] {  userId, deviceId } );
         Iterator<QueryResultsRow> i = results.iterator();
         if (i.hasNext()) {
@@ -51,7 +61,7 @@ public class QueryHelper {
         return d;
     }
 
-    public static QueryResultsRow getNotification(StatefulKnowledgeSession ksession, String userId, long notificationId) {
+    public static QueryResultsRow getNotification(StatefulKnowledgeSession ksession, long userId, long notificationId) {
         QueryResults results = ksession.getQueryResults("NotificationById", new Object[] {  userId, notificationId } );
         Iterator<QueryResultsRow> i = results.iterator();
         if (i.hasNext()) {
@@ -60,7 +70,7 @@ public class QueryHelper {
         else return null;
     }
 
-    public static QueryResults getNotifications(StatefulKnowledgeSession ksession, String userId, String deviceId) {
+    public static QueryResults getNotifications(StatefulKnowledgeSession ksession, long userId, String deviceId) {
         return ksession.getQueryResults("NotificationsByUser", new Object[] {userId, deviceId});
     }
 
@@ -68,20 +78,21 @@ public class QueryHelper {
         return ksession.getQueryResults("AllNotifications", new Object[] {min});
     }
 
-    public static QueryResults getAllSensors(StatefulKnowledgeSession ksession, String ownerId) {
+    public static QueryResults getAllSensors(StatefulKnowledgeSession ksession, long ownerId) {
         return ksession.getQueryResults("Sensors", new Object[] {  ownerId });
     }
 
-    public static QueryResults getAllFeeds(StatefulKnowledgeSession ksession, String ownerId, String sensorId) {
+    public static QueryResults getAllFeeds(StatefulKnowledgeSession ksession, long ownerId, String sensorId) {
         return ksession.getQueryResults("Feeds", new Object[] {ownerId, sensorId });
     }
 
-    public static QueryResultsRow getSensor(StatefulKnowledgeSession ksession, String ownerId, String sensorId) {
+    public static QueryResultsRow getSensor(StatefulKnowledgeSession ksession, long ownerId, String sensorId) {
         QueryResults results = ksession.getQueryResults("Sensor", new Object[] {  ownerId, sensorId } );
         Iterator<QueryResultsRow> i = results.iterator();
         if (i.hasNext()) return i.next();
         else return null;
     }
+
     public static QueryResultsRow getFeed(StatefulKnowledgeSession ksession, String sensorId, String feedId) {
         QueryResults results = ksession.getQueryResults("Feed", new Object[] {sensorId, feedId });
         Iterator<QueryResultsRow> i = results.iterator();
@@ -89,15 +100,14 @@ public class QueryHelper {
         else return null;
     }
 
-    public static QueryResultsRow getFeedByUser(StatefulKnowledgeSession ksession, String ownerId, String sensorId, String feedId) {
+    public static QueryResultsRow getFeedByUser(StatefulKnowledgeSession ksession, long ownerId, String sensorId, String feedId) {
         QueryResults results = ksession.getQueryResults("FeedByUser", new Object[] {ownerId,  sensorId, feedId });
         Iterator<QueryResultsRow> i = results.iterator();
         if (i.hasNext()) return i.next();
         else return null;
     }
 
-
-    public static List<Data> GetFeedStream(StatefulKnowledgeSession ksession, String ownerId, String sensorId, String feedId) {
+    public static List<Data> GetFeedStream(StatefulKnowledgeSession ksession, long ownerId, String sensorId, String feedId) {
         QueryResults results = ksession.getQueryResults("FeedStream", new Object[] { ownerId, sensorId, feedId });
         Iterator<QueryResultsRow> i = results.iterator();
         if (i.hasNext()) {

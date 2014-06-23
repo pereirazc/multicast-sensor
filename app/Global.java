@@ -16,8 +16,6 @@ public class Global extends GlobalSettings {
         Logger.info("Adding users");
 
         User user = new User();
-
-        user.setUserId("001");
         user.setEmail("pereira.zc@gmail.com");
         user.setFirstName("Isaac");
         user.setLastName("Pereira");
@@ -26,7 +24,6 @@ public class Global extends GlobalSettings {
         SceneEngine.getInstance().getSession().insert(user);
 
         User user2 = new User();
-        user2.setUserId("002");
         user2.setEmail("sergio@multicast.com.br");
         user2.setFirstName("Sérgio");
         user2.setLastName("Teixeira");
@@ -35,7 +32,6 @@ public class Global extends GlobalSettings {
         SceneEngine.getInstance().getSession().insert(user2);
 
         User user3 = new User();
-        user3.setUserId("003");
         user3.setEmail("jadirlucas@hotmail.com");
         user3.setFirstName("Jadir");
         user3.setLastName("Lucas");

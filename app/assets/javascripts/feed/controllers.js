@@ -1,5 +1,6 @@
 /**
  * Feed controllers.
+ *
  */
 define(['angular'], function(angular) {
 
@@ -7,7 +8,7 @@ define(['angular'], function(angular) {
 
   var minute = 60000;
 
-  var FeedCtrl = function($rootScope, $scope, userService, feedService, $routeParams, $timeout, $location, feed, stream) {
+  var FeedCtrl = function($rootScope, $scope, userService, feedService, $stateParams, $timeout, $state, feed, stream, toaster) {
 
       $scope.chartConfig = {
           options: {
@@ -40,8 +41,8 @@ define(['angular'], function(angular) {
 
       $scope.updateGraph = function () {
 
-          if ($routeParams.feedId!==undefined) {
-              feedService.getStream($routeParams.sensorId, $routeParams.feedId).success(
+          if ($stateParams.feedId!==undefined) {
+              feedService.getStream($stateParams.sensorId, $stateParams.feedId).success(
                   function(data/*, status, headers, response*/) {
 
                       $scope.stream = data;
@@ -52,8 +53,8 @@ define(['angular'], function(angular) {
                           max = $scope.stream[$scope.stream.length - 1].x;
                           $scope.updateGraph = function () {
 
-                              if ($routeParams.feedId!==undefined) {
-                                  feedService.getStream($routeParams.sensorId, $routeParams.feedId).success(
+                              if ($stateParams.feedId!==undefined) {
+                                  feedService.getStream($stateParams.sensorId, $stateParams.feedId).success(
                                       function(data/*, status, headers, response*/) {
 
                                           $scope.stream = data;
@@ -142,11 +143,13 @@ define(['angular'], function(angular) {
 
         $scope.modal.title = 'Edit Feed...';
         $scope.modal.ok = function(feed) {
-            feedService.updateFeed($routeParams.sensorId, feedId, feed).success(
+            feedService.updateFeed($stateParams.sensorId, feedId, feed).success(
                 function() {
                     angular.element("#feedModal").modal("hide");
                     angular.element("#feedModal").on('hidden.bs.modal', function () {
-                        $location.path('dashboard/'.concat($routeParams.sensorId).concat('/feeds/').concat(feed.feedId));
+
+                        $state.go('home.feed', {sensorId: $stateParams.sensorId, feedId: feed.feedId});
+
                         $scope.$apply();
                     });
                 }
@@ -170,8 +173,10 @@ define(['angular'], function(angular) {
                 function() {
                     angular.element("#confirmModal").modal("hide");
                     angular.element("#confirmModal").on('hidden.bs.modal', function () {
-                        $location.path('dashboard/'.concat(sensorId));
                         $scope.$apply();
+                        toaster.clear();
+                        $state.go('home.sensor', {sensorId: sensorId});
+                        toaster.pop('warning', 'Deleted Feed', 'feed ' + feedId + ' removed succesfully.', 2000);
                     });
                 }
             );
@@ -191,13 +196,14 @@ define(['angular'], function(angular) {
         feedService.postData($scope.feed.sensor.sensorId, $scope.feed.feedId, point);
     };
 
-
-
     $scope.pauseStream = function () {
       $timeout.cancel($scope.timer);
     };
+
+    $scope.$on('$destroy', $scope.pauseStream);
+
   };
-  FeedCtrl.$inject = ["$rootScope", "$scope", "userService", "feedService", "$routeParams", "$timeout", "$location", "feed", "stream"];
+  FeedCtrl.$inject = ["$rootScope", "$scope", "userService", "feedService", "$stateParams", "$timeout", "$state", "feed", "stream", "toaster"];
 
   return {
     FeedCtrl: FeedCtrl

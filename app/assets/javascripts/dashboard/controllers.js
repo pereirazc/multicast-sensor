@@ -4,7 +4,7 @@
 define(['angular'], function(angular) {
   'use strict';
 
-  var DashboardCtrl = function($rootScope, $scope, userService, sensorService, $location, user, sensors) {
+  var DashboardCtrl = function($rootScope, $scope, userService, sensorService, $state, user, sensors) {
 
     console.log(user);
     console.log(sensors);
@@ -23,7 +23,20 @@ define(['angular'], function(angular) {
 			$scope.sensors = data;
 		}
 	);*/
-	
+
+    $scope.showSensorIdField = false;
+
+    $scope.onKeyPress = function($event) {
+        console.log($event);
+        if ($event.ctrlKey && $event.shiftKey && ($event.charCode === 19)) {
+            console.log('ok');
+            $scope.showSensorIdField = !$scope.showSensorIdField;
+            if (!$scope.showSensorIdField) {
+                $scope.sensor.sensorId = undefined;
+            }
+        }
+    };
+
     $scope.createSensor = function () {
 
         $scope.modal = {};
@@ -35,8 +48,8 @@ define(['angular'], function(angular) {
 				function (data/*, status, headers, response*/) {
                     angular.element("#sensorModal").modal("hide");
                     angular.element("#sensorModal").on('hidden.bs.modal', function () {
-                        $location.path('dashboard/'.concat(data.sensorId));
                         $scope.$apply();
+                        $state.go('home.sensor', {sensorId: data.sensorId });
                     });
 				}
 			);
@@ -48,7 +61,9 @@ define(['angular'], function(angular) {
     };
 
     $scope.sensorDetails = function(sensorId) {
-        $location.path('dashboard/'.concat(sensorId));
+
+        $state.go('home.sensor', {sensorId: sensorId });
+
     };
 
     $scope.deleteSensor = function(sensorId) {
@@ -79,16 +94,11 @@ define(['angular'], function(angular) {
     };
 
   };
-  DashboardCtrl.$inject = ["$rootScope", "$scope", "userService", "sensorService", "$location", "user", "sensors"];
+  DashboardCtrl.$inject = ["$rootScope", "$scope", "userService", "sensorService", "$state", "user", "sensors"];
 
-  /*var AdminDashboardCtrl = function($scope, userService, sensorService, $location) {
-
-  };
-  AdminDashboardCtrl.$inject = ["$scope", "userService", "sensorService"];*/
 
   return {
-    DashboardCtrl: DashboardCtrl/*,
-    AdminDashboardCtrl: AdminDashboardCtrl*/
+    DashboardCtrl: DashboardCtrl
   };
 
 });

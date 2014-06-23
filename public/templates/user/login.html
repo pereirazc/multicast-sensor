@@ -1,12 +1,27 @@
-<div class="page-header"><h1>Sign Up <small>Use any email/password</small></h1></div>
-<form name="form">
-  <fieldset>
-    <div class="form-group">
-      <label for="email">Email address</label>
-      <input type="email" style="width: 30%;" class="form-control" data-ng-model="credentials.email" placeholder="E-Mail" required /><br />
-      <label for="password">Password</label>
-      <input type="password" style="width: 30%;" class="form-control input-large" data-ng-model="credentials.password" placeholder="Password" required /><br />
-      <button class="btn btn-primary" data-ng-disabled="form.$invalid" data-ng-click="login(credentials)">Log In</button>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+        <div class="page-header"><h1>Log In <small>Not an user yet? <a class="nounderline" href="#/signup">Sign Up</a></small></h1></div>
+        <form role="form">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-md-offset-3">
+                    <div class="form-group">
+                        <input type="email" name="email" id="email" class="form-control input-lg" data-ng-model="credentials.email" placeholder="E-Mail" tabindex="1" required>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-md-offset-3">
+                    <div class="form-group">
+                        <input type="password" name="password" id="password" class="form-control input-lg" data-ng-model="credentials.password" placeholder="Password" tabindex="2" required>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-6 col-md-offset-3">
+                    <a class="btn btn-primary btn-block btn-lg" data-ng-disabled="form.$invalid" data-ng-click="login(credentials)">Log In</a>
+                </div>
+            </div>
+        </form>
     </div>
-  </fieldset>
-</form>
+</div>

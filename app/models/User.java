@@ -4,17 +4,24 @@ import java.io.Serializable;
 
 public class User implements Serializable {
 
-    private String userId;
+    private static long last_id = 0;
+
+    private long userId;
     private String firstName;
     private String lastName;
     private String email;
     private String password;
 
+    public User() {
+        last_id++;
+        this.userId = last_id;
+    }
+
     //private String username;
-    public String getUserId() {
+    public long getUserId() {
         return userId;
     }
-    public void setUserId(String userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
     public String getFirstName() {

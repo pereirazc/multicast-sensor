@@ -2,20 +2,15 @@
     <h1><i class="fa fa-signal"></i> {{ feed.feedId }}</h1>
     <a ng-href="#/dashboard/{{ feed.sensor.sensorId }}"> <h4>{{ feed.sensor.label }}</h4> </a>
     <h5>{{ feed.description }}</h5>
-
     <div class="btn-group">
-        <button type="button" class="btn btn-sm btn-success" ng-click="editFeed(feed.feedId)" data-toggle="modal" data-target="#feedModal"><i class="fa fa-pencil-square-o"></i> Edit...</button>
+        <button type="button" class="btn btn-sm btn-primary" ng-click="editFeed(feed.feedId)" data-toggle="modal" data-target="#feedModal"><i class="fa fa-pencil-square-o"></i> Edit...</button>
         <button type="button" class="btn btn-sm btn-danger" ng-click="deleteFeed(feed.sensor.sensorId, feed.feedId)" data-toggle="modal" data-target="#confirmModal">Remove</button>
     </div>
-
 </div>
-
-
-
 
 <div class="span6">
     <input id="label" class="input-md" ng-model="pointValue" type="text"/>
-    <button class="btn btn-primary btn-success" ng-click="addPoints()">Add Point...</button>
+    <button class="btn btn-primary btn-primary" ng-click="addPoints()">Add Point...</button>
     <select style="float: right" ng-model="currentTimeWindow"  ng-options="o.label for o in timeWindowOpts" ng-change="updateTimeWindow()" ></select>
 </div>
 <div class="span6">
@@ -23,4 +18,3 @@
 </div>
 <div class="modal fade" ng-include="'/assets/templates/feed/feed-edit.html'" id="feedModal" role="dialog"></div>
 <div class="modal fade" ng-include="'/assets/templates/confirm-dialog.html'" id="confirmModal" role="dialog"></div>
-

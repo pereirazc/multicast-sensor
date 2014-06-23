@@ -5,7 +5,7 @@
  */
 define(['angular', './routes', './controllers'], function(angular, routes, controllers) {
     'use strict';
-    var mod = angular.module('multicast.dashboard', ['ngRoute', 'dashboard.routes']);
+    var mod = angular.module('multicast.dashboard', ['ui.router', 'dashboard.routes']);
 
     mod.controller("DashboardCtrl", controllers.DashboardCtrl);
 

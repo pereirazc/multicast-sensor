@@ -1,49 +1,3 @@
-/**
- * 	Angular RangeSlider SCSS
- *
- *	Version: 0.0.7
- *
- * 	Author: Daniel Crisp, danielcrisp.com
- *
- * 	The rangeSlider has been styled to match the default styling
- * 	of form elements styled using Twitter's Bootstrap
- *
- * 	Originally forked from https://github.com/leongersen/noUiSlider
- *
-
-	This code is released under the MIT Licence - http://opensource.org/licenses/MIT
-
-	Copyright (c) 2013 Daniel Crisp
-
-	Permission is hereby granted, free of charge, to any person obtaining a copy
-	of this software and associated documentation files (the "Software"), to deal
-	in the Software without restriction, including without limitation the rights
-	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	copies of the Software, and to permit persons to whom the Software is
-	furnished to do so, subject to the following conditions:
-
-	The above copyright notice and this permission notice shall be included in
-	all copies or substantial portions of the Software.
-
-	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	THE SOFTWARE.
-
- */
-/*------------------------------------*\
-    COMPASS IMPORTS
-\*------------------------------------*/
-/*------------------------------------*\
-    SETTINGS
-\*------------------------------------*/
-/*------------------------------------*\
-    THE CSS
-\*------------------------------------*/
-/* line 69, scss/angular.rangeSlider.scss */
 .ngrs-range-slider {
     position: relative;
     margin: 10px 0 30px;
@@ -64,30 +18,7 @@
     -o-transition: border linear 0.2s, box-shadow linear 0.2s;
     transition: border linear 0.2s, box-shadow linear 0.2s;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    /*------------------------------------*\
-        RUNNER
-    \*------------------------------------*/
-    /*------------------------------------*\
-        JOIN (connects the two handles)
-    \*------------------------------------*/
-    /*------------------------------------*\
-        HANDLE
-    \*------------------------------------*/
-    /*------------------------------------*\
-        HANDLE SPECIFICS
-    \*------------------------------------*/
-    /*------------------------------------*\
-        VALUE LABELS
-    \*------------------------------------*/
-    /*------------------------------------*\
-        VERTICAL SLIDER
-    \*------------------------------------*/
-    /*------------------------------------*\
-        FOCUS STATE
-    \*------------------------------------*/
-    /*------------------------------------*\
-        DISABLED STATE
-    \*------------------------------------*/
+
 }
 /* line 72, scss/angular.rangeSlider.scss */
 .ngrs-range-slider, .ngrs-range-slider * {
@@ -194,27 +125,7 @@
 .ngrs-range-slider.ngrs-vertical {
     width: 28px;
     margin: 10px auto;
-    /*------------------------------------*\
-        RUNNER
-    \*------------------------------------*/
-    /*------------------------------------*\
-        JOIN
-    \*------------------------------------*/
-    /*------------------------------------*\
-        HANDLE
-    \*------------------------------------*/
-    /*------------------------------------*\
-        HANDLE SPECIFICS
-    \*------------------------------------*/
-    /*------------------------------------*\
-        VALUE LABELS
-    \*------------------------------------*/
-    /*------------------------------------*\
-        VERTICAL LEFT SLIDER
-    \*------------------------------------*/
-    /*------------------------------------*\
-        VERTICAL RIGHT SLIDER
-    \*------------------------------------*/
+
 }
 /* line 214, scss/angular.rangeSlider.scss */
 .ngrs-range-slider.ngrs-vertical .ngrs-runner {

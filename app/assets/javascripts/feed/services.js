@@ -5,7 +5,7 @@ define(["angular", "common"], function(angular) {
 
   'use strict';
 
-  var mod = angular.module("feed.services", ["ngRoute", "multicast.common"]);
+  var mod = angular.module("feed.services", ["multicast.common"]);
 
   mod.factory("feedService", ["$http", "$q", "playRoutes", function($http, $q, playRoutes) {
     var FeedService = function() {
@@ -49,12 +49,6 @@ define(["angular", "common"], function(angular) {
   /**
    * If the current route does not resolve, go back to the start page.
    */
-  /*var handleRouteError = function($rootScope, $location) {
-    $rootScope.$on("$routeChangeError", function() {
-      $location.path("/");
-    });
-  };
-  handleRouteError.$inject = ["$rootScope", "$location"];
-  mod.run(handleRouteError);*/
+
   return mod;
 });

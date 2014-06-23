@@ -19,6 +19,7 @@ GET           /api/admin/alerts                       controllers.APICtrl.getAll
 
 # Authentication
 POST          /login                                  controllers.SecurityCtrl.login()
+POST          /signup                                 controllers.SecurityCtrl.signup()
 POST          /logout                                 controllers.SecurityCtrl.logout()
 
 # Users

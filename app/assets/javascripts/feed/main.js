@@ -6,7 +6,7 @@
 define(["angular", "highcharts", "./routes", "./controllers", "./services"], function(angular, Highcharts, routes, controllers) {
     'use strict';
 
-    var mod =  angular.module('multicast.feed', [  'ngRoute', 'feed.routes', 'feed.services', 'ui-rangeSlider', 'highcharts-ng',
+    var mod =  angular.module('multicast.feed', [  'ui.router', 'feed.routes', 'feed.services', 'ui-rangeSlider', 'highcharts-ng',
                                                     'frapontillo.bootstrap-switch']);
 
     Highcharts.setOptions(

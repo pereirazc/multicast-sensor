@@ -4,21 +4,32 @@
 define(['angular', 'common'], function(angular) {
   'use strict';
 
-  var mod = angular.module('user.services', ['ngRoute', 'ngCookies',  'multicast.common']);
+  var mod = angular.module('user.services', ['ngCookies',  'multicast.common']);
   mod.factory('userService', ['$http', '$q', '$cookies', '$cookieStore', 'playRoutes', function($http, $q, $cookies, $cookieStore, playRoutes) {
 
     var user, token;
 
     function clean() {
-          // Logout on server in a real app
-          token = undefined;
-          user = undefined;
-          $cookieStore.remove('authToken');
-          $cookieStore.remove('user');
+        // Logout on server in a real app
+        token = undefined;
+        user = undefined;
+        $cookieStore.remove('authToken');
+        $cookieStore.remove('user');
+    }
+
+    function getToken() {
+        if (token===undefined) {
+            token = $cookies.authToken;
+        }
+        return token;
     }
 
     return {
-        loginUser : function(credentials) {
+        logged: function () {
+        return getToken() !== undefined;
+        },
+
+        login: function(credentials) {
             return playRoutes.controllers.SecurityCtrl.login().post(credentials).then(function(response) {
               // return promise so we can chain easily
               token = response.data.authToken;
@@ -29,6 +40,10 @@ define(['angular', 'common'], function(angular) {
               $cookieStore.put('user', user);
               return user;
             });
+        },
+
+        signup : function(registration) {
+            return playRoutes.controllers.SecurityCtrl.signup().post(registration);
         },
 
         cleanAuth: function() {
@@ -47,10 +62,7 @@ define(['angular', 'common'], function(angular) {
         },
 
         getToken : function() {
-            if (token===undefined) {
-                token = $cookies.authToken;
-            }
-            return token;
+            return getToken();
         },
 
         getUser : function() {
@@ -77,15 +89,5 @@ define(['angular', 'common'], function(angular) {
       return deferred.promise;
     }]
   });
-  /**
-   * If the current route does not resolve, go back to the start page.
-   */
-  //var handleRouteError = function($rootScope, $location) {
-  //  $rootScope.$on('$routeChangeError', function(/*e, next, current*/) {
-  //    $location.path('/');
-  //  });
-  //};
-  //handleRouteError.$inject = ['$rootScope', '$location'];
-  //mod.run(handleRouteError);
   return mod;
 });

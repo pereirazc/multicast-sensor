@@ -8,11 +8,11 @@
 define(['angular', 'home', 'user', 'dashboard', 'sensor', 'feed'], function(angular) {
   'use strict';
 
-  var app = angular.module('app', ['multicast.home', 'multicast.user', 'multicast.dashboard', 'multicast.sensor', 'multicast.feed']);
+  var app = angular.module('app', ['toaster', 'angular-loading-bar', 'multicast.home', 'multicast.user', 'multicast.dashboard', 'multicast.sensor', 'multicast.feed']);
   // We must already declare most dependencies here (except for common), or the submodules' routes
   // will not be resolved
 
-    app.factory('authInterceptor',['$injector', '$rootScope', '$q', '$window', '$location', function ($injector, $rootScope, $q, $window, $location) {
+    app.factory('authInterceptor',['$injector', '$rootScope', '$q', '$window', function ($injector, $rootScope, $q /*,$window*/) {
         return {
             request: function (config) {
                 config.headers = config.headers || {};
@@ -25,15 +25,17 @@ define(['angular', 'home', 'user', 'dashboard', 'sensor', 'feed'], function(angu
             },
 
             responseError: function(err) {
+
                 if (err.status === 401) {
                     // handle the case where the user is not authenticated
                     $injector.get('userService').cleanAuth();
-                    $location.path('/login');
+                    $injector.get('$state').go('home.login');
                 }
 
-                if (err.status === 400) {
+                if (err.status === 404) {
                     // handle the case where the user is not authenticated
-                    $window.location.replace('/error');
+                    $injector.get('$state').go('404', {}, {location:false});
+                    //$window.location.replace('/error');
                 }
 
                 return $q.reject(err);
@@ -47,14 +49,6 @@ define(['angular', 'home', 'user', 'dashboard', 'sensor', 'feed'], function(angu
         $locationProvider.html5Mode(true);
         $httpProvider.interceptors.push('authInterceptor');
 
-    }]);
-
-    app.run(['$rootScope', function ($rootScope) {
-        $rootScope.$on('$routeChangeSuccess', function() {
-            console.log('show navbar');
-            $rootScope.hideNavBar = $rootScope.error;
-            $rootScope.error = false;
-        });
     }]);
 
 

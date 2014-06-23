@@ -24,7 +24,7 @@ public class FeedCtrl extends Controller {
         if (r != null) {
             Feed feed = (Feed) r.get("feed");
             return ok(toJson(feed)).as("application/json");
-        } else return badRequest("Couldn't find Feed");
+        } else return notFound("Couldn't find Feed");
     }
 
     //POST
@@ -50,7 +50,7 @@ public class FeedCtrl extends Controller {
                 }
                 SceneEngine.getInstance().getSession().insert(feed);
                 return ok(toJson(feed)).as("application/json");
-            } else return badRequest("Couldn't find Sensor");
+            } else return notFound("Couldn't find Sensor");
         } else return badRequest("Expecting Json data");
     }
 
@@ -92,7 +92,7 @@ public class FeedCtrl extends Controller {
                 SceneEngine.getInstance().getSession().update(r.getFactHandle("feed"), feed);
                 JsonNode result = toJson(feed);
                 return ok(result).as("application/json");
-            } else return badRequest("Couldn't find Feed");
+            } else return notFound("Couldn't find Feed");
         } else return badRequest("Expecting Json data");
     }
 
@@ -108,7 +108,7 @@ public class FeedCtrl extends Controller {
             }
             SceneEngine.getInstance().getSession().retract(r.getFactHandle("feed"));
             return ok().as("application/json");
-        } else return badRequest("Couldn't find Feed");
+        } else return notFound("Couldn't find Feed");
     }
 
 }

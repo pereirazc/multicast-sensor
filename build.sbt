@@ -6,7 +6,7 @@ import com.typesafe.sbt.less.Import._
 // TODO Replace with your project's/module's name
 name := "multicast-sensor"
 
-version := "0.1.4"
+version := "0.1.5"
 
 // TODO Set your organization here
 organization := "br.com.multicast"
@@ -27,6 +27,7 @@ libraryDependencies ++= Seq(
   "org.webjars" % "jquery" % "1.11.1",
   "org.webjars" % "bootstrap" % "3.1.1-1" exclude("org.webjars", "jquery"),
   "org.webjars" % "angularjs" % "1.2.16-2" exclude("org.webjars", "jquery"),
+  "org.webjars" % "angular-ui-router" % "0.2.10-1",
   "org.webjars" % "highcharts" % "3.0.10" exclude("org.webjars", "jquery"),
   "org.webjars" % "highcharts-ng" % "0.0.6",
   "org.webjars" % "angular-ui-bootstrap" % "0.11.0-2",

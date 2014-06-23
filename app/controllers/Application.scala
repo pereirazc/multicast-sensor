@@ -33,6 +33,7 @@ object Application extends Controller {
       Ok(
         Routes.javascriptRouter(varName)(
           routes.javascript.SecurityCtrl.login,
+          routes.javascript.SecurityCtrl.signup,
           routes.javascript.SecurityCtrl.logout,
           routes.javascript.UserCtrl.getUser,
           routes.javascript.SensorCtrl.getAllSensors,
